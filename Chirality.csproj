@@ -50,6 +50,11 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="BSML">
+      <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="BS_Utils">
       <HintPath>$(BeatSaberDir)\Plugins\BS_Utils.dll</HintPath>
       <Private>False</Private>
@@ -114,6 +119,7 @@
   <ItemGroup>
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="MirrorTransforms.cs" />
+    <Compile Include="ModUI.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="ChiralityController.cs" />
@@ -126,6 +132,7 @@
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
     <None Include="Chirality.csproj.user" Condition="Exists('Chirality.csproj.user')" />
+    <EmbeddedResource Include="ModUI.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
@@ -135,7 +142,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="RedX.png" />
+    <EmbeddedResource Include="Icons\horizontal.png" />
+    <EmbeddedResource Include="Icons\inverse.png" />
+    <EmbeddedResource Include="Icons\vertical.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

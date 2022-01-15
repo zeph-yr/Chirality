@@ -8,7 +8,7 @@ namespace Chirality.Configuration
     {
         public static PluginConfig Instance { get; set; }
         public bool enabled { get; set; } = true;
-        public string mode = "Standard";
+        public int mode = 0;
 
         /// <summary>
         /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).

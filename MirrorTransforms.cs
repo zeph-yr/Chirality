@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Chirality
 {
@@ -23,6 +19,16 @@ namespace Chirality
 				copy.Mirror(numberOfLines);
 				h_beatmapData.AddBeatmapObjectData(copy);
 			}
+
+            foreach (BeatmapEventData beatmapEventData in beatmapData.beatmapEventsData)
+            {
+                h_beatmapData.AddBeatmapEventData(beatmapEventData);
+            }
+
+            foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
+            {
+                h_beatmapData.AddAvailableSpecialEventsPerKeyword(keyValuePair.Key, keyValuePair.Value);
+            }
 
 			return h_beatmapData;
 		}
@@ -48,6 +54,16 @@ namespace Chirality
                 {
                     v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Obstacle(obstacleData));
                 }
+            }
+
+            foreach (BeatmapEventData beatmapEventData in beatmapData.beatmapEventsData)
+            {
+                v_beatmapData.AddBeatmapEventData(beatmapEventData);
+            }
+
+            foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
+            {
+                v_beatmapData.AddAvailableSpecialEventsPerKeyword(keyValuePair.Key, keyValuePair.Value);
             }
 
             return v_beatmapData;
