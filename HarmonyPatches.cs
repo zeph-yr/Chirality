@@ -86,8 +86,22 @@ namespace Chirality
 
         internal static BeatmapCharacteristicSO Create_BMCSO(string name, string hint)
         {
-            Texture2D texture = new Texture2D(50, 50);
-            Sprite icon = Sprite.Create(texture, new Rect(0, 0, 50, 50), new Vector2(0.5f, 0.5f));
+            SpriteRenderer[] sprites = Resources.FindObjectsOfTypeAll<SpriteRenderer>();
+            
+            SpriteRenderer a = null;
+            foreach (var s in sprites)
+            {
+                Plugin.Log.Debug(s.name);
+                if (s.name == "NoteArrowGlow")
+                    a = s;
+            }
+
+            
+
+            //Texture2D texture = new Texture2D(50, 50);
+            //Sprite icon = Sprite.Create(texture, new Rect(0, 0, 50, 50), new Vector2(0.5f, 0.5f));
+
+            Sprite icon = SongCore.Utilities.Utils.LoadSpriteFromFile("RedX.png");
 
             BeatmapCharacteristicSO beatmapCharacteristicSO = BeatmapCharacteristicSO.CreateInstance<BeatmapCharacteristicSO>();
 
