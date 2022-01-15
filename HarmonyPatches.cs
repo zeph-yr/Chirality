@@ -21,16 +21,40 @@ namespace Chirality
 
             List<IDifficultyBeatmapSet> custom_difficultyBeatmapSets = new List<IDifficultyBeatmapSet>(level.beatmapLevelData.difficultyBeatmapSets);
 
+            if (level.beatmapLevelData.difficultyBeatmapSets.FirstOrDefault() == null)
+            {
+                return;
+            }
+
+
             if (level.beatmapLevelData.difficultyBeatmapSets.Any((i) => i.beatmapCharacteristic.serializedName == "Horizontal"))
             {
                 return;
             }
 
+
+            int index = -1;
+
+            for (int i = 0; i < level.beatmapLevelData.difficultyBeatmapSets.Length; i++)
+            {
+                if (level.beatmapLevelData.difficultyBeatmapSets[i].beatmapCharacteristic.serializedName == "Lawless")
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1)
+            {
+                return;
+            }    
+
+
             // Later add other modes
-            if (level.beatmapLevelData.difficultyBeatmapSets.FirstOrDefault() != null && level.beatmapLevelData.difficultyBeatmapSets[0].beatmapCharacteristic.serializedName == "Standard")
+            /*if (level.beatmapLevelData.difficultyBeatmapSets.Any((i) => i.beatmapCharacteristic.serializedName == "Standard" && PluginConfig.Instance.mode == "Standard"))
             {
                 Plugin.Log.Debug("Any difficultyBeatmapSets: " + level.beatmapLevelData.difficultyBeatmapSets[0].beatmapCharacteristic.serializedName);
-            }
+            }*/
 
 
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Horizontal", "Mirror Left-Right"));
@@ -38,9 +62,9 @@ namespace Chirality
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Invert", "Invert"));
 
 
-            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Horizontal(i.beatmapData.GetCopy()))).ToArray();
-            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Vertical(i.beatmapData.GetCopy()))).ToArray();
-            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Inverse(i.beatmapData.GetCopy()))).ToArray();
+            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Horizontal(i.beatmapData.GetCopy()))).ToArray();
+            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Vertical(i.beatmapData.GetCopy()))).ToArray();
+            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Inverse(i.beatmapData.GetCopy()))).ToArray();
 
 
             h_beatmapset.SetCustomDifficultyBeatmaps(h_customDifficultyBeatmaps);
@@ -91,43 +115,4 @@ namespace Chirality
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-    /*[HarmonyPatch(typeof(StandardLevelDetailViewController), MethodType.Constructor)]
-    internal class StandardLevelDetailViewControllerPatch
-    {
-        static void Postfix(ref StandardLevelDetailViewController __instance)
-        {
-            Plugin.leveldetail = __instance;
-        }
-    }*/
-
-
-    /*[HarmonyPatch(typeof(BeatmapDataTransformHelper), "CreateTransformedBeatmapData")]
-    internal class BeatmapDataTransformPatch
-    {
-        static IReadonlyBeatmapData Postfix(IReadonlyBeatmapData __result)
-        {
-            if (!PluginConfig.Instance.enabled)
-            {
-                return __result;
-            }
-
-            Plugin.Log.Debug("Mirror Horizontal");
-
-            __result = MirrorTransforms.Mirror_Horizontal(__result);
-            __result = MirrorTransforms.Mirror_Vertical(__result);
-
-            return __result;
-        }
-    }*/
 }
