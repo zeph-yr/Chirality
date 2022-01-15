@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BeatSaberMarkupLanguage;
+﻿using System.Linq;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using Chirality.Configuration;
@@ -13,8 +8,6 @@ namespace Chirality
 {
     class ModUI : NotifiableSingleton<ModUI>
     {
-        internal static StandardLevelDetailView standardLevelDetailView;
-
         internal static StandardLevelDetailViewController standardLevelDetailViewController;
 
         public ModUI()
@@ -22,24 +15,8 @@ namespace Chirality
 
         }
 
-        [UIValue("increment_value")]
-        private int Increment_Value
-        {
-            get => PluginConfig.Instance.mode;
-            set
-            {
-                standardLevelDetailView = Resources.FindObjectsOfTypeAll<StandardLevelDetailView>().FirstOrDefault();
-                standardLevelDetailViewController = Resources.FindObjectsOfTypeAll<StandardLevelDetailViewController>().FirstOrDefault();
-
-                PluginConfig.Instance.mode = value;
-
-                standardLevelDetailViewController.ClearSelected();
-                //standardLevelDetailView.SetContent(standardLevelDetailViewController.selectedDifficultyBeatmap.level, );
-            }
-        }
-
-        [UIAction("increment_formatter")]
-        private string Increment_Formatter(int value) => ((PreferenceEnum)value).ToString();
+        [UIValue("mode")]
+        private string Mode => ((PreferenceEnum)PluginConfig.Instance.mode).ToString();
 
         public enum PreferenceEnum
         {
@@ -48,5 +25,25 @@ namespace Chirality
             OneSaber = 2,
             Lawless = 3
         }
+
+
+        /*[UIValue("increment_value")]
+        private int Increment_Value
+        {
+            get => PluginConfig.Instance.mode;
+            set
+            {
+                PluginConfig.Instance.mode = value;
+
+                standardLevelDetailViewController = Resources.FindObjectsOfTypeAll<StandardLevelDetailViewController>().FirstOrDefault();
+                standardLevelDetailViewController.ClearSelected();
+            }
+        }
+
+        [UIAction("increment_formatter")]
+        private string Increment_Formatter(int value) => ((PreferenceEnum)value).ToString();
+
+        <increment-setting value='increment_value' apply-on-change='true' bind-value='true' text='Mode' integer-only='true' min='0' max='3' formatter='increment_formatter'/>
+        */
     }
 }
