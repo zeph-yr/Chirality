@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
-using static PlayerSaveData;
 
 /// <summary>
 /// See https://github.com/pardeike/Harmony/wiki for a full reference on Harmony.
@@ -16,68 +15,48 @@ namespace Chirality
     [HarmonyPatch (typeof(StandardLevelDetailView), "SetContent")]
     internal class StandardLevelDetailViewPatch
     {
-        static void Prefix(ref IBeatmapLevel level, BeatmapDifficulty defaultDifficulty, BeatmapCharacteristicSO defaultBeatmapCharacteristic, PlayerData playerData)
+        static void Prefix(IBeatmapLevel level)
         {
             Plugin.Log.Debug("SetContent");
 
-            List<IDifficultyBeatmapSet> difficultyBeatmapSets_2 = new List<IDifficultyBeatmapSet>(level.beatmapLevelData.difficultyBeatmapSets);
+            List<IDifficultyBeatmapSet> custom_difficultyBeatmapSets = new List<IDifficultyBeatmapSet>(level.beatmapLevelData.difficultyBeatmapSets);
 
-
-
-            //if (level.beatmapLevelData.difficultyBeatmapSets.Any(/*(a) => a.beatmapCharacteristic.serializedName == "Standard")*/) == true)
-            //{
-            //    Plugin.Log.Debug("Any difficultyBeatmapSets: " + level.beatmapLevelData.difficultyBeatmapSets[0].beatmapCharacteristic);
-            //}
-
+            if (level.beatmapLevelData.difficultyBeatmapSets.Any((i) => i.beatmapCharacteristic.serializedName == "Horizontal"))
+            {
+                return;
+            }
 
             // Later add other modes
             if (level.beatmapLevelData.difficultyBeatmapSets.FirstOrDefault() != null && level.beatmapLevelData.difficultyBeatmapSets[0].beatmapCharacteristic.serializedName == "Standard")
             {
                 Plugin.Log.Debug("Any difficultyBeatmapSets: " + level.beatmapLevelData.difficultyBeatmapSets[0].beatmapCharacteristic.serializedName);
             }
-        
 
 
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Horizontal", "Mirror Left-Right"));
             CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Vertical", "Mirror Up-Down"));
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Invert", "Invert"));
 
-            //Plugin.Log.Debug("SetContent 1");
+
+            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Horizontal(i.beatmapData.GetCopy()))).ToArray();
+            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Vertical(i.beatmapData.GetCopy()))).ToArray();
+            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Inverse(i.beatmapData.GetCopy()))).ToArray();
 
 
-            CustomDifficultyBeatmap[] customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps.Select((i) => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Horizontal(i.beatmapData.GetCopy()))).ToArray();
-            //Plugin.Log.Debug("SetContent 2");
+            h_beatmapset.SetCustomDifficultyBeatmaps(h_customDifficultyBeatmaps);
+            v_beatmapset.SetCustomDifficultyBeatmaps(v_customDifficultyBeatmaps);
+            i_beatmapset.SetCustomDifficultyBeatmaps(i_customDifficultyBeatmaps);
 
-            h_beatmapset.SetCustomDifficultyBeatmaps(customDifficultyBeatmaps);
-            //Plugin.Log.Debug("SetContent 3");
 
-            difficultyBeatmapSets_2.Add(h_beatmapset);
-            //Plugin.Log.Debug("SetContent 4");
+            custom_difficultyBeatmapSets.Add(h_beatmapset);
+            custom_difficultyBeatmapSets.Add(v_beatmapset);
+            custom_difficultyBeatmapSets.Add(i_beatmapset);
 
-            if (level.beatmapLevelData is BeatmapLevelData data)
+
+            if (level.beatmapLevelData is BeatmapLevelData beatmapLevelData)
             {
-                Plugin.Log.Debug("SetContent 5");
-
-                Set_Field(data, "_difficultyBeatmapSets", difficultyBeatmapSets_2.ToArray());
-
-                /*if (!Set(data, "_difficultyBeatmapSets", difficultyBeatmapSets_2.ToArray()))
-                {
-                    Plugin.Log.Warn("Could not set new difficulty sets");
-                    return;
-                }*/
+                Set_Field(beatmapLevelData, "_difficultyBeatmapSets", custom_difficultyBeatmapSets.ToArray());
             }
-            else
-            {
-                Plugin.Log.Info("Unsupported beatmapLevelData: " + (level.beatmapLevelData?.GetType().FullName ?? "null"));
-            }
-
-            Plugin.Log.Debug("SetContent 6");
-
-            //Plugin.Log.Debug("njs" + level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps[0].noteJumpMovementSpeed);
-            //Plugin.Log.Debug(level.beatmapLevelData.difficultyBeatmapSets[1].ToString());
-            //Plugin.Log.Debug(level.beatmapLevelData.difficultyBeatmapSets[2].ToString());
-            //Plugin.Log.Debug(level.beatmapLevelData.difficultyBeatmapSets.Length.ToString());
-
         }
 
 

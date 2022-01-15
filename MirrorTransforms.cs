@@ -54,6 +54,14 @@ namespace Chirality
         }
 
 
+        internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData)
+        {
+            Plugin.Log.Debug("Mirror Inverse");
+
+            return Mirror_Vertical(Mirror_Horizontal(beatmapData));
+        }
+
+
         internal static void Create_Vertical_Transforms()
         {
             Plugin.Log.Debug("Create Vertical Transforms");
