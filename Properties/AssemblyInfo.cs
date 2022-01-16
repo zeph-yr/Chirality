@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Chirality(MirrorMod)")]
+[assembly: AssemblyProduct("Chirality")]
 [assembly: AssemblyCopyright("Copyright © Zephyr 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
