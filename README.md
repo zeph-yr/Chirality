@@ -26,8 +26,8 @@ Lawless | 3
 - For example: You set scores on InvertStandard then switch to play InvertOneSaber. Your scores set on InvertStandard will be hidden and the leaderboard will show the InvertOneSaber scores. To see the InvertStandard scores again, switch back to Standard mode.
 
 ## Things To Note
-- Walls and events in Noodle and ME maps may be missing or do funny things in the mirror modes. Consider it a part of the surprise ^^
-- May lag when selecting some wall-art Noodle, ME or other maps with an excessive number of objects
+- Walls and events in some Noodle and ME maps may be missing or end up in funny positions in the mirror modes. Consider it a part of the surprise ^^
+- May lag in menu when selecting certain wall-art Noodle, ME or other maps with an excessive number of objects
 - This mod is incompatible with some maps containing custom data and will load forever. If that happens, select another map or turn off the mod to play that map normally
 
 ## How Do I Say The Name?
