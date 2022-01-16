@@ -1,5 +1,5 @@
 ﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<vertical vertical-fit='PreferredSize' preferred-height='50'>
+	<vertical vertical-fit='PreferredSize' preferred-height='70'>
 		
 		<vertical vertical-fit='PreferredSize' preferred-height='10'>
 			<horizontal preferred-width='70' child-control-width='true'>
@@ -7,6 +7,9 @@
 			</horizontal>
 			<horizontal preferred-width='70' child-control-width='true'>
 				<text text='2 [NoArrows], or 3 [Lawless], then restart game.' font-color='#ffff00ff' font-size='3'></text>
+			</horizontal>
+			<horizontal preferred-width='70' child-control-width='true'>
+				<text text='It is recommended to restart game before switching to Multiplayer.' font-color='#ffff00ff' font-size='3'></text>
 			</horizontal>
 		</vertical>
 

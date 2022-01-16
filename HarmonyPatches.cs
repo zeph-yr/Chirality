@@ -15,8 +15,10 @@ namespace Chirality
         {
             Plugin.Log.Debug("SetContent");
 
-            if (BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Mission)
+            if (PluginConfig.Instance.enabled == false || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Mission)
             {
+                // This prevents prevents new diffs from being generated in mp but
+                // will not remove the ones generated recently while playing in solo then going into mp
                 return;
             }
 
@@ -27,8 +29,11 @@ namespace Chirality
             }
 
 
-            if (level.beatmapLevelData.difficultyBeatmapSets.Any((i) => i.beatmapCharacteristic.serializedName == "Horizontal"))
+            if (level.beatmapLevelData.difficultyBeatmapSets.Any((i) => i.beatmapCharacteristic.serializedName.Contains("Horizontal")))
             {
+                // This is needed to keep the diffs from multiplying like rabbits
+                // however it also means modes cant be switched on the fly for maps with recently generated diffs (unless we remove the generated diffs)
+
                 return;
             }
 
@@ -84,11 +89,14 @@ namespace Chirality
 
             BeatmapCharacteristicSO beatmapCharacteristicSO = BeatmapCharacteristicSO.CreateInstance<BeatmapCharacteristicSO>();
 
+            string name_mode = name + ((ModUI.PreferenceEnum)PluginConfig.Instance.mode).ToString();
+            string hint_mode = hint + " " + ((ModUI.PreferenceEnum)PluginConfig.Instance.mode).ToString();
+
             Set_Field(beatmapCharacteristicSO, "_icon", icon);
-            Set_Field(beatmapCharacteristicSO, "_characteristicNameLocalizationKey", name);
-            Set_Field(beatmapCharacteristicSO, "_descriptionLocalizationKey", hint);
-            Set_Field(beatmapCharacteristicSO, "_serializedName", name);
-            Set_Field(beatmapCharacteristicSO, "_compoundIdPartName", name);
+            Set_Field(beatmapCharacteristicSO, "_characteristicNameLocalizationKey", name_mode);
+            Set_Field(beatmapCharacteristicSO, "_descriptionLocalizationKey", hint_mode);
+            Set_Field(beatmapCharacteristicSO, "_serializedName", name_mode);
+            Set_Field(beatmapCharacteristicSO, "_compoundIdPartName", name_mode);
             Set_Field(beatmapCharacteristicSO, "_sortingOrder", 100);
             Set_Field(beatmapCharacteristicSO, "_containsRotationEvents", false);
             Set_Field(beatmapCharacteristicSO, "_requires360Movement", false);

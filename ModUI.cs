@@ -9,6 +9,7 @@ namespace Chirality
     class ModUI : NotifiableSingleton<ModUI>
     {
         internal static StandardLevelDetailViewController standardLevelDetailViewController;
+        internal static StandardLevelDetailView standardLevelDetailView;
 
         public ModUI()
         {
@@ -27,7 +28,10 @@ namespace Chirality
         }
 
 
-        /*[UIValue("increment_value")]
+        // For in-game mode switching, but the anti-rabbit-multiplier is needed stops this from working on maps that already have recently generated diffs
+        // May be too confusing for player. Restarting game to switch modes may be more easily understood
+        /*
+        [UIValue("increment_value")]
         private int Increment_Value
         {
             get => PluginConfig.Instance.mode;
@@ -35,15 +39,25 @@ namespace Chirality
             {
                 PluginConfig.Instance.mode = value;
 
-                standardLevelDetailViewController = Resources.FindObjectsOfTypeAll<StandardLevelDetailViewController>().FirstOrDefault();
-                standardLevelDetailViewController.ClearSelected();
+                // This approach doesn'ts work:
+                //standardLevelDetailViewController = Resources.FindObjectsOfTypeAll<StandardLevelDetailViewController>().FirstOrDefault();
+                //standardLevelDetailView = Resources.FindObjectsOfTypeAll<StandardLevelDetailView>().FirstOrDefault();
+
+                //standardLevelDetailViewController.ClearSelected();
+                //standardLevelDetailViewController.RefreshContentLevelDetailView();
+
+                //standardLevelDetailView.ClearContent();
+                //standardLevelDetailView.RefreshContent();
+    
+                //SongCore.Loader loader = Resources.FindObjectsOfTypeAll<SongCore.Loader>().FirstOrDefault();
+                //loader.RefreshSongs();
             }
         }
 
         [UIAction("increment_formatter")]
         private string Increment_Formatter(int value) => ((PreferenceEnum)value).ToString();
 
-        <increment-setting value='increment_value' apply-on-change='true' bind-value='true' text='Mode' integer-only='true' min='0' max='3' formatter='increment_formatter'/>
+        //	<increment-setting value='increment_value' apply-on-change='true' bind-value='true' text='Mode' integer-only='true' min='0' max='3' formatter='increment_formatter'/>
         */
     }
 }
