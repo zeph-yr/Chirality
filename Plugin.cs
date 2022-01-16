@@ -1,4 +1,5 @@
-﻿using IPA;
+﻿using Chirality.Configuration;
+using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using System;
@@ -50,7 +51,10 @@ namespace Chirality
 
             ApplyHarmonyPatches();
 
-            BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.instance.AddTab("Chirality", "Chirality.ModUI.bsml", ModUI.instance);
+            //if (PluginConfig.Instance.enabled)
+            //{
+                BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.instance.AddTab("Chirality", "Chirality.ModUI.bsml", ModUI.instance);
+            //}
         }
 
 

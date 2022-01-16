@@ -19,6 +19,19 @@ namespace Chirality
         [UIValue("mode")]
         private string Mode => ((PreferenceEnum)PluginConfig.Instance.mode).ToString();
 
+        [UIValue("enabled")]
+        private string Enabled => Get_Enabled();
+
+        internal string Get_Enabled()
+        {
+            if (PluginConfig.Instance.enabled)
+            {
+                return "To disable mod, set enabled in Chirality.json to false and restart game.";
+            }
+            else
+                return "To enable mod, set enabled in Chirality.json to true and restart game.";
+        }
+
         public enum PreferenceEnum
         {
             Standard = 0,

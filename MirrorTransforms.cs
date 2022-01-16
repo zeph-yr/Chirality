@@ -8,7 +8,7 @@ namespace Chirality
 
         internal static BeatmapData Mirror_Horizontal(BeatmapData beatmapData)
         {
-			Plugin.Log.Debug("Mirror Horizontal");
+			//Plugin.Log.Debug("Mirror Horizontal");
 
 			int numberOfLines = beatmapData.numberOfLines;
 			BeatmapData h_beatmapData = new BeatmapData(numberOfLines);
@@ -25,10 +25,10 @@ namespace Chirality
                 h_beatmapData.AddBeatmapEventData(beatmapEventData);
             }
 
-            foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
+            /*foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
             {
                 h_beatmapData.AddAvailableSpecialEventsPerKeyword(keyValuePair.Key, keyValuePair.Value);
-            }
+            }*/
 
 			return h_beatmapData;
 		}
@@ -36,7 +36,7 @@ namespace Chirality
 
 		internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData)
         {
-            Plugin.Log.Debug("Mirror Vertical");
+            //Plugin.Log.Debug("Mirror Vertical");
 
             int numberOfLines = beatmapData.numberOfLines;
             BeatmapData v_beatmapData = new BeatmapData(numberOfLines);
@@ -61,10 +61,10 @@ namespace Chirality
                 v_beatmapData.AddBeatmapEventData(beatmapEventData);
             }
 
-            foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
+            /*foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
             {
                 v_beatmapData.AddAvailableSpecialEventsPerKeyword(keyValuePair.Key, keyValuePair.Value);
-            }
+            }*/
 
             return v_beatmapData;
         }
@@ -72,7 +72,7 @@ namespace Chirality
 
         internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData)
         {
-            Plugin.Log.Debug("Mirror Inverse");
+            //Plugin.Log.Debug("Mirror Inverse");
 
             return Mirror_Vertical(Mirror_Horizontal(beatmapData));
         }
