@@ -47,6 +47,54 @@ namespace Chirality
 			return h_beatmapData;
 		}
 
+
+        internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool remove_walls)
+        {
+            //Plugin.Log.Debug("Mirror Vertical");
+
+            int numberOfLines = beatmapData.numberOfLines;
+            BeatmapData v_beatmapData = new BeatmapData(numberOfLines);
+
+            foreach (BeatmapObjectData beatmapObjectData in beatmapData.beatmapObjectsData)
+            {
+                NoteData noteData;
+                if ((noteData = (beatmapObjectData as NoteData)) != null)
+                {
+                    v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Note(noteData, flip_rows));
+                }
+
+                if (remove_walls == false)
+                {
+                    ObstacleData obstacleData;
+                    if ((obstacleData = (beatmapObjectData as ObstacleData)) != null)
+                    {
+                        v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Obstacle(obstacleData, flip_rows));
+                    }
+                }
+            }
+
+            foreach (BeatmapEventData beatmapEventData in beatmapData.beatmapEventsData)
+            {
+                v_beatmapData.AddBeatmapEventData(beatmapEventData);
+            }
+
+            foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
+            {
+                v_beatmapData.AddAvailableSpecialEventsPerKeyword(keyValuePair.Key, keyValuePair.Value);
+            }
+
+            return v_beatmapData;
+        }
+
+
+        internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData, bool flip_lines, bool flip_rows, bool remove_walls)
+        {
+            //Plugin.Log.Debug("Mirror Inverse");
+
+            return Mirror_Vertical(Mirror_Horizontal(beatmapData, flip_lines, remove_walls), flip_rows, remove_walls);
+        }
+
+
         internal static void Create_Horizontal_Transforms()
         {
             Plugin.Log.Debug("Create Horizontal Transforms");
@@ -95,56 +143,11 @@ namespace Chirality
             ObstacleData h_obstacleData;
             if (flip_lines && obstacleData.obstacleType == ObstacleType.FullHeight)
             {
-                h_obstacleData = new ObstacleData(obstacleData.time, num_lines - 1 - obstacleData.lineIndex, ObstacleType.FullHeight, obstacleData.duration, obstacleData.width);
+                h_obstacleData = new ObstacleData(obstacleData.time, num_lines - obstacleData.width - obstacleData.lineIndex, ObstacleType.FullHeight, obstacleData.duration, obstacleData.width);
+                return h_obstacleData;
             }
 
             return obstacleData;
-        }
-
-        internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool remove_walls)
-        {
-            //Plugin.Log.Debug("Mirror Vertical");
-
-            int numberOfLines = beatmapData.numberOfLines;
-            BeatmapData v_beatmapData = new BeatmapData(numberOfLines);
-
-            foreach (BeatmapObjectData beatmapObjectData in beatmapData.beatmapObjectsData)
-            {
-                NoteData noteData;
-                if ((noteData = (beatmapObjectData as NoteData)) != null)
-                {
-                    v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Note(noteData, flip_rows));
-                }
-
-                if (remove_walls == false)
-                {
-                    ObstacleData obstacleData;
-                    if ((obstacleData = (beatmapObjectData as ObstacleData)) != null)
-                    {
-                        v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Obstacle(obstacleData, flip_rows));
-                    }
-                }
-            }
-
-            foreach (BeatmapEventData beatmapEventData in beatmapData.beatmapEventsData)
-            {
-                v_beatmapData.AddBeatmapEventData(beatmapEventData);
-            }
-
-            foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
-            {
-                v_beatmapData.AddAvailableSpecialEventsPerKeyword(keyValuePair.Key, keyValuePair.Value);
-            }
-
-            return v_beatmapData;
-        }
-
-
-        internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData, bool flip_lines, bool flip_rows, bool skip_walls)
-        {
-            //Plugin.Log.Debug("Mirror Inverse");
-
-            return Mirror_Vertical(Mirror_Horizontal(beatmapData, flip_lines), flip_rows, skip_walls);
         }
 
 
