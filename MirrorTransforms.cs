@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Chirality
 {
     class MirrorTransforms
     {
+        internal static Random rand = new Random(99);
+        internal static List<NoteCutDirection> directions;
         internal static Dictionary<NoteCutDirection, NoteCutDirection> horizontal_cut_transform;
         internal static Dictionary<NoteCutDirection, NoteCutDirection> vertical_cut_transform;
 
-        internal static BeatmapData Mirror_Horizontal(BeatmapData beatmapData, bool flip_lines, bool remove_walls)
+        internal static BeatmapData Mirror_Horizontal(BeatmapData beatmapData, bool flip_lines, bool remove_walls, bool has_ME)
         {
 			//Plugin.Log.Debug("Mirror Horizontal");
 
@@ -19,7 +22,7 @@ namespace Chirality
                 NoteData noteData;
                 if ((noteData = (beatmapObjectData as NoteData)) != null)
                 {
-                    h_beatmapData.AddBeatmapObjectData(Mirror_Horizontal_Note(noteData, numberOfLines, flip_lines));
+                    h_beatmapData.AddBeatmapObjectData(Mirror_Horizontal_Note(noteData, numberOfLines, flip_lines, has_ME));
                 }
 
                 if (remove_walls == false)
@@ -46,7 +49,7 @@ namespace Chirality
 		}
 
 
-        internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool remove_walls)
+        internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool remove_walls, bool has_ME)
         {
             //Plugin.Log.Debug("Mirror Vertical");
 
@@ -58,7 +61,7 @@ namespace Chirality
                 NoteData noteData;
                 if ((noteData = (beatmapObjectData as NoteData)) != null)
                 {
-                    v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Note(noteData, flip_rows));
+                    v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Note(noteData, flip_rows, has_ME));
                 }
 
                 if (remove_walls == false)
@@ -85,17 +88,30 @@ namespace Chirality
         }
 
 
-        internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData, bool flip_lines, bool flip_rows, bool remove_walls)
+        internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData, bool flip_lines, bool flip_rows, bool remove_walls, bool has_ME)
         {
             //Plugin.Log.Debug("Mirror Inverse");
 
-            return Mirror_Vertical(Mirror_Horizontal(beatmapData, flip_lines, remove_walls), flip_rows, remove_walls);
+            return Mirror_Vertical(Mirror_Horizontal(beatmapData, flip_lines, remove_walls, has_ME), flip_rows, remove_walls, has_ME);
+        }
+
+
+        internal static NoteCutDirection Get_Random_Direction()
+        {
+            int index = rand.Next(directions.Count);
+
+            return directions[index];
         }
 
 
         internal static void Create_Horizontal_Transforms()
         {
             Plugin.Log.Debug("Create Horizontal Transforms");
+
+            directions = new List<NoteCutDirection> { NoteCutDirection.Up, NoteCutDirection.Down, NoteCutDirection.Left , NoteCutDirection.Right,
+                                                      NoteCutDirection.UpLeft, NoteCutDirection.UpRight, NoteCutDirection.DownLeft, NoteCutDirection.DownRight,
+                                                      NoteCutDirection.Any, NoteCutDirection.None};
+
             horizontal_cut_transform = new Dictionary<NoteCutDirection, NoteCutDirection>();
 
             horizontal_cut_transform.Add(NoteCutDirection.Up, NoteCutDirection.Up);
@@ -113,7 +129,8 @@ namespace Chirality
             horizontal_cut_transform.Add(NoteCutDirection.None, NoteCutDirection.None);
         }
 
-        private static NoteData Mirror_Horizontal_Note(NoteData noteData, int num_lines, bool flip_lines)
+
+        private static NoteData Mirror_Horizontal_Note(NoteData noteData, int num_lines, bool flip_lines, bool has_ME)
         {
             int h_lineIndex;
             if (flip_lines)
@@ -126,15 +143,16 @@ namespace Chirality
             }
 
             NoteCutDirection h_cutDirection; // Support for some maps that crash
-            if (horizontal_cut_transform.TryGetValue(noteData.cutDirection, out h_cutDirection) == false)
+            if (horizontal_cut_transform.TryGetValue(noteData.cutDirection, out h_cutDirection) == false || has_ME)
             {
-                h_cutDirection = noteData.cutDirection;
+                h_cutDirection = Get_Random_Direction(); // Replace missing blocks in Noodle maps with random direction
             }
 
             NoteData h_noteData = NoteData.CreateBasicNoteData(noteData.time, h_lineIndex, noteData.noteLineLayer, noteData.colorType.Opposite(), h_cutDirection);
 
             return h_noteData;
         }
+
 
         private static ObstacleData Mirror_Horizontal_Obstacle(ObstacleData obstacleData, int num_lines, bool flip_lines)
         {
@@ -171,7 +189,7 @@ namespace Chirality
         }
 
 
-        private static NoteData Mirror_Vertical_Note(NoteData noteData, bool flip_rows)
+        private static NoteData Mirror_Vertical_Note(NoteData noteData, bool flip_rows, bool has_ME)
         {
             NoteLineLayer v_noteLinelayer;
 
@@ -185,10 +203,11 @@ namespace Chirality
             }
 
             NoteCutDirection v_cutDirection; // Support for some maps that crash
-            if (vertical_cut_transform.TryGetValue(noteData.cutDirection, out v_cutDirection) == false)
+            if (vertical_cut_transform.TryGetValue(noteData.cutDirection, out v_cutDirection) == false || has_ME)
             {
-                v_cutDirection = noteData.cutDirection;
+                v_cutDirection = Get_Random_Direction();
             }
+
 
             NoteData v_noteData = NoteData.CreateBasicNoteData(noteData.time, noteData.lineIndex, v_noteLinelayer, noteData.colorType, v_cutDirection);
 
