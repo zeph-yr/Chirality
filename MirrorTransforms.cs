@@ -4,9 +4,10 @@ namespace Chirality
 {
     class MirrorTransforms
     {
+        internal static Dictionary<NoteCutDirection, NoteCutDirection> horizontal_cut_transform;
         internal static Dictionary<NoteCutDirection, NoteCutDirection> vertical_cut_transform;
 
-        internal static BeatmapData Mirror_Horizontal(BeatmapData beatmapData)
+        internal static BeatmapData Mirror_Horizontal(BeatmapData beatmapData, bool flip_lines, bool remove_walls)
         {
 			//Plugin.Log.Debug("Mirror Horizontal");
 
@@ -17,10 +18,21 @@ namespace Chirality
 
 			foreach (BeatmapObjectData beatmapObjectData in beatmapData.beatmapObjectsData)
 			{
-				BeatmapObjectData copy = beatmapObjectData.GetCopy();
-				copy.Mirror(numberOfLines);
-				h_beatmapData.AddBeatmapObjectData(copy);
-			}
+                NoteData noteData;
+                if ((noteData = (beatmapObjectData as NoteData)) != null)
+                {
+                    h_beatmapData.AddBeatmapObjectData(Mirror_Horizontal_Note(noteData, numberOfLines, flip_lines));
+                }
+
+                if (remove_walls == false)
+                {
+                    ObstacleData obstacleData;
+                    if ((obstacleData = (beatmapObjectData as ObstacleData)) != null)
+                    {
+                        h_beatmapData.AddBeatmapObjectData(Mirror_Horizontal_Obstacle(obstacleData, numberOfLines, flip_lines));
+                    }
+                }
+            }
 
             foreach (BeatmapEventData beatmapEventData in beatmapData.beatmapEventsData)
             {
@@ -35,8 +47,61 @@ namespace Chirality
 			return h_beatmapData;
 		}
 
+        internal static void Create_Horizontal_Transforms()
+        {
+            Plugin.Log.Debug("Create Horizontal Transforms");
+            horizontal_cut_transform = new Dictionary<NoteCutDirection, NoteCutDirection>();
 
-		internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool remove_walls)
+            horizontal_cut_transform.Add(NoteCutDirection.Up, NoteCutDirection.Up);
+            horizontal_cut_transform.Add(NoteCutDirection.Down, NoteCutDirection.Down);
+
+            horizontal_cut_transform.Add(NoteCutDirection.UpLeft, NoteCutDirection.UpRight);
+            horizontal_cut_transform.Add(NoteCutDirection.DownLeft, NoteCutDirection.DownRight);
+
+            horizontal_cut_transform.Add(NoteCutDirection.UpRight, NoteCutDirection.UpLeft);
+            horizontal_cut_transform.Add(NoteCutDirection.DownRight, NoteCutDirection.DownLeft);
+
+            horizontal_cut_transform.Add(NoteCutDirection.Left, NoteCutDirection.Right);
+            horizontal_cut_transform.Add(NoteCutDirection.Right, NoteCutDirection.Left);
+            horizontal_cut_transform.Add(NoteCutDirection.Any, NoteCutDirection.Any);
+            horizontal_cut_transform.Add(NoteCutDirection.None, NoteCutDirection.None);
+        }
+
+        private static NoteData Mirror_Horizontal_Note(NoteData noteData, int num_lines, bool flip_lines)
+        {
+            int h_lineIndex;
+            if (flip_lines)
+            {
+                h_lineIndex = num_lines - 1 - noteData.lineIndex;
+            }
+            else
+            {
+                h_lineIndex = noteData.lineIndex;
+            }
+
+            NoteCutDirection h_cutDirection; // Support for some maps that crash
+            if (horizontal_cut_transform.TryGetValue(noteData.cutDirection, out h_cutDirection) == false)
+            {
+                h_cutDirection = noteData.cutDirection;
+            }
+
+            NoteData h_noteData = NoteData.CreateBasicNoteData(noteData.time, h_lineIndex, noteData.noteLineLayer, noteData.colorType.Opposite(), h_cutDirection);
+
+            return h_noteData;
+        }
+
+        private static ObstacleData Mirror_Horizontal_Obstacle(ObstacleData obstacleData, int num_lines, bool flip_lines)
+        {
+            ObstacleData h_obstacleData;
+            if (flip_lines && obstacleData.obstacleType == ObstacleType.FullHeight)
+            {
+                h_obstacleData = new ObstacleData(obstacleData.time, num_lines - 1 - obstacleData.lineIndex, ObstacleType.FullHeight, obstacleData.duration, obstacleData.width);
+            }
+
+            return obstacleData;
+        }
+
+        internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool remove_walls)
         {
             //Plugin.Log.Debug("Mirror Vertical");
 
@@ -75,11 +140,11 @@ namespace Chirality
         }
 
 
-        internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData, bool flip_rows, bool skip_walls)
+        internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData, bool flip_lines, bool flip_rows, bool skip_walls)
         {
             //Plugin.Log.Debug("Mirror Inverse");
 
-            return Mirror_Vertical(Mirror_Horizontal(beatmapData), flip_rows, skip_walls);
+            return Mirror_Vertical(Mirror_Horizontal(beatmapData, flip_lines), flip_rows, skip_walls);
         }
 
 

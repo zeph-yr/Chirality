@@ -47,6 +47,7 @@ namespace Chirality
         [OnEnable]
         public void OnEnable()
         {
+            MirrorTransforms.Create_Horizontal_Transforms();
             MirrorTransforms.Create_Vertical_Transforms();
 
             ApplyHarmonyPatches();

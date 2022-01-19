@@ -117,13 +117,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Create_Difficulty.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="MirrorTransforms.cs" />
     <Compile Include="ModUI.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
-    <Compile Include="ChiralityController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
