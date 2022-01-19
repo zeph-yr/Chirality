@@ -26,7 +26,6 @@ namespace Chirality
         {
             Plugin.Log.Debug("SetContent");
 
-
             if (PluginConfig.Instance.enabled == false || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Mission)
             {
                 // This prevents prevents new diffs from being generated in mp but
@@ -34,12 +33,10 @@ namespace Chirality
                 return;
             }
 
-
             if (level.beatmapLevelData.difficultyBeatmapSets.FirstOrDefault() == null)
             {
                 return;
             }
-
 
             if (level.beatmapLevelData.difficultyBeatmapSets.Any((i) => i.beatmapCharacteristic.serializedName.Contains("Horizontal")))
             {
@@ -49,7 +46,6 @@ namespace Chirality
                 return;
             }
 
-            List<IDifficultyBeatmapSet> custom_difficultyBeatmapSets = new List<IDifficultyBeatmapSet>(level.beatmapLevelData.difficultyBeatmapSets);
 
             int index = -1;
 
@@ -73,15 +69,17 @@ namespace Chirality
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Invert", "Invert"));
 
 
-            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select(i => Map_Maker.Create_Difficulty(i, h_beatmapset, 0)).ToArray(); //Where(i => SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Mapping Extensions") == false).Select( i => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Horizontal(i.beatmapData.GetCopy()))).ToArray();
-            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Map_Maker.Create_Difficulty(i, v_beatmapset, 1)).ToArray(); //new CustomDifficultyBeatmap(i.level, v_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Vertical(i.beatmapData.GetCopy(), false))).ToArray();
-            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Map_Maker.Create_Difficulty(i, i_beatmapset, 2)).ToArray(); //new CustomDifficultyBeatmap(i.level, i_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Inverse(i.beatmapData.GetCopy(), false))).ToArray();
+            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select(i => Create_Difficulty(i, h_beatmapset, 0)).ToArray(); //Where(i => SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Mapping Extensions") == false).Select( i => new CustomDifficultyBeatmap(i.level, h_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Horizontal(i.beatmapData.GetCopy()))).ToArray();
+            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Create_Difficulty(i, v_beatmapset, 1)).ToArray(); //new CustomDifficultyBeatmap(i.level, v_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Vertical(i.beatmapData.GetCopy(), false))).ToArray();
+            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Create_Difficulty(i, i_beatmapset, 2)).ToArray(); //new CustomDifficultyBeatmap(i.level, i_beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Inverse(i.beatmapData.GetCopy(), false))).ToArray();
 
 
             h_beatmapset.SetCustomDifficultyBeatmaps(h_customDifficultyBeatmaps);
             v_beatmapset.SetCustomDifficultyBeatmaps(v_customDifficultyBeatmaps);
             i_beatmapset.SetCustomDifficultyBeatmaps(i_customDifficultyBeatmaps);
 
+
+            List<IDifficultyBeatmapSet> custom_difficultyBeatmapSets = new List<IDifficultyBeatmapSet>(level.beatmapLevelData.difficultyBeatmapSets);
 
             custom_difficultyBeatmapSets.Add(h_beatmapset);
             custom_difficultyBeatmapSets.Add(v_beatmapset);
@@ -91,6 +89,38 @@ namespace Chirality
             if (level.beatmapLevelData is BeatmapLevelData beatmapLevelData)
             {
                 Set_Field(beatmapLevelData, "_difficultyBeatmapSets", custom_difficultyBeatmapSets.ToArray());
+            }
+        }
+
+
+        internal static CustomDifficultyBeatmap Create_Difficulty(IDifficultyBeatmap i, CustomDifficultyBeatmapSet beatmapset, int mode)
+        {
+            bool has_ME_NE = false;
+            //List<string> requirements = new List<string>();
+
+            if (i.level.levelID.StartsWith("custom_level"))
+            {
+                if (SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Mapping Extensions") ||
+                    SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Noodle Extensions"))
+                {
+                    has_ME_NE = true;
+
+                    Plugin.Log.Debug("ME-NE map, yeeting walls");
+
+                    //requirements = SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.ToList<string>();
+                    //Plugin.Log.Debug("req:" + requirements.ToString());
+                }
+            }
+
+            switch (mode)
+            {
+                case 0: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Horizontal(i.beatmapData.GetCopy()));
+
+                case 1: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Vertical(i.beatmapData.GetCopy(), false, has_ME_NE));
+
+                case 2: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Inverse(i.beatmapData.GetCopy(), true, has_ME_NE));
+
+                default: return (CustomDifficultyBeatmap)i;
             }
         }
 

@@ -36,7 +36,7 @@ namespace Chirality
 		}
 
 
-		internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool skip_walls)
+		internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool remove_walls)
         {
             //Plugin.Log.Debug("Mirror Vertical");
 
@@ -51,15 +51,9 @@ namespace Chirality
                     v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Note(noteData, flip_rows));
                 }
 
-                ObstacleData obstacleData;
-                if (skip_walls) // To do. Dont skip walls, but add original walls back :)
+                if (remove_walls == false)
                 {
-
-                        //if ((obstacleData = (beatmapObjectData as ObstacleData)) != null)
-                        //v_beatmapData.AddBeatmapObjectData(obstacleData);
-                }
-                else
-                {
+                    ObstacleData obstacleData;
                     if ((obstacleData = (beatmapObjectData as ObstacleData)) != null)
                     {
                         v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Obstacle(obstacleData, flip_rows));
