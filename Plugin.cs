@@ -1,10 +1,8 @@
-﻿using Chirality.Configuration;
-using IPA;
+﻿using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using System;
 using System.Reflection;
-using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
 namespace Chirality

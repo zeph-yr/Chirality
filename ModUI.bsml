@@ -22,7 +22,10 @@
 		<horizontal>
 			<text text='~enabled' font-color='#8c8c8cff' font-size='3'></text>
 		</horizontal>
-			
+
+		<horizontal>
+			<text text='Commissioned by Aroc. Thanks!' font-color='#ffff00ff' font-size='3' align='Center'></text>
+		</horizontal>
 		<horizontal>
 			<text text='Chirality (MirrorMod) v1.0.0 by Zephyr#9125' font-color='#ff0080ff' font-size='3' align='Center'></text>
 		</horizontal>

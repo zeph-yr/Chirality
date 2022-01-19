@@ -11,8 +11,6 @@ namespace Chirality
         {
 			//Plugin.Log.Debug("Mirror Horizontal");
 
-            // To do, replace with own mirror dictionary so it doesnt break all noodle and me maps
-
 			int numberOfLines = beatmapData.numberOfLines;
 			BeatmapData h_beatmapData = new BeatmapData(numberOfLines);
 
@@ -206,18 +204,6 @@ namespace Chirality
             }
 
             return obstacleData;
-
-            /*if (obstacleData.obstacleType == ObstacleType.FullHeight)
-            {
-                return obstacleData;
-            }
-
-            else
-            {
-                obstacleData.MoveTime(-1); // To keep the number of walls the same
-
-                return obstacleData;
-            }*/
         }
     }
 }
