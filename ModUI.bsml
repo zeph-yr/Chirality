@@ -16,7 +16,7 @@
 		<horizontal>
 			<text text='Current Mode'></text>
 			<text text='  |  ' font-color='#ffffffff'></text>
-			<text text='~mode'></text>
+			<text text='~mode' hover-hint='ME and Noodle maps may be a surprise :)'></text>
 		</horizontal>
 		
 		<horizontal>

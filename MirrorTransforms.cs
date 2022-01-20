@@ -133,7 +133,12 @@ namespace Chirality
         private static NoteData Mirror_Horizontal_Note(NoteData noteData, int num_lines, bool flip_lines, bool has_ME)
         {
             int h_lineIndex;
-            if (flip_lines)
+
+            if (noteData.lineIndex > 10 || noteData.lineIndex < 0)
+            {
+                h_lineIndex = rand.Next(4); // ME chaos mode
+            }
+            else if (flip_lines)
             {
                 h_lineIndex = num_lines - 1 - noteData.lineIndex;
             }
@@ -193,7 +198,11 @@ namespace Chirality
         {
             NoteLineLayer v_noteLinelayer;
 
-            if (flip_rows)
+            if ((int)noteData.noteLineLayer > 2)
+            {
+                v_noteLinelayer = (NoteLineLayer)rand.Next(3);
+            }
+            else if (flip_rows)
             {
                v_noteLinelayer = (NoteLineLayer)(3 - 1 - (int)noteData.noteLineLayer);
             }

@@ -84,21 +84,24 @@ namespace Chirality
 
         internal static CustomDifficultyBeatmap Create_Difficulty(IDifficultyBeatmap i, CustomDifficultyBeatmapSet beatmapset, int mode)
         {
-            bool has_ME = false;
-            bool has_ME_NE = false;
+            bool has_ME = false; // Chaos generator
+            bool has_ME_NE = false; // Yeets walls
 
             if (i.level.levelID.StartsWith("custom_level"))
             {
+                // Chaos generator
                 if (SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Mapping Extensions"))
                 {
                     has_ME = true;
                     has_ME_NE = true;
                 }
+
+                // No walls for ME and NE maps
                 if (has_ME || SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Noodle Extensions"))
                 {
                     has_ME_NE = true;
 
-                    Plugin.Log.Debug("ME-NE map, yeeting walls");
+                    Plugin.Log.Debug("ME-NE map: yeeting walls");
                 }
             }
 
