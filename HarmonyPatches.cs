@@ -5,12 +5,12 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-
 namespace Chirality
 {
     [HarmonyPatch (typeof(StandardLevelDetailView), "SetContent")]
     internal class StandardLevelDetailViewPatch
     {
+
         static void Prefix(IBeatmapLevel level)
         {
             Plugin.Log.Debug("SetContent");
@@ -49,6 +49,8 @@ namespace Chirality
             {
                 return;
             }
+
+            MirrorTransforms.rand = new System.Random(99);
 
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.horizontal.png", "Horizontal", "Mirror Left-Right"));
             CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.vertical.png", "Vertical", "Mirror Up-Down"));

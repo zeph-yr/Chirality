@@ -24,7 +24,7 @@
 		</horizontal>
 
 		<horizontal>
-			<text text='Commissioned by Aroc. Thanks!' font-color='#ffff00ff' font-size='3' align='Center'></text>
+			<text text='Special request from Aroc. Thanks!' font-color='#ffff00ff' font-size='3' align='Center'></text>
 		</horizontal>
 		<horizontal>
 			<text text='Chirality (MirrorMod) v1.0.0 by Zephyr#9125' font-color='#ff0080ff' font-size='3' align='Center'></text>

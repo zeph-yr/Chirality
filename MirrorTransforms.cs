@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Chirality
 {
     class MirrorTransforms
     {
-        internal static Random rand = new Random(99);
+        internal static System.Random rand;
         internal static List<NoteCutDirection> directions = new List<NoteCutDirection> {NoteCutDirection.Up, NoteCutDirection.Down, NoteCutDirection.Left , NoteCutDirection.Right,
                                                                                         NoteCutDirection.UpLeft, NoteCutDirection.UpRight, NoteCutDirection.DownLeft, NoteCutDirection.DownRight,
                                                                                         NoteCutDirection.Any, NoteCutDirection.None};
@@ -98,6 +97,33 @@ namespace Chirality
             return Mirror_Vertical(Mirror_Horizontal(beatmapData, flip_lines, remove_walls, is_ME), flip_rows, remove_walls, is_ME);
         }
 
+        internal static int Check_Index(int lineIndex)//, out int lineIndex_2)
+        {
+            if (lineIndex > 10 || lineIndex < 0)
+            {
+                return rand.Next(4);
+                //lineIndex_2 = rand.Next(4);
+                //return false; // ME chaos mode
+            }
+
+            return lineIndex;
+            //lineIndex_2 = lineIndex;
+            //return true;
+        }
+
+        internal static NoteLineLayer Check_Layer(NoteLineLayer lineLayer)//, out NoteLineLayer lineLayer_2)
+        {
+            if ((int)lineLayer > 2)
+            {
+                return (NoteLineLayer)rand.Next(3); // ME chaos mode
+                //lineLayer_2 = (NoteLineLayer)rand.Next(3); // ME chaos mode
+                //return false;
+            }
+
+            return lineLayer;
+            //lineLayer_2 = lineLayer;
+            //return true;
+        }
 
         internal static NoteCutDirection Get_Random_Direction()
         {
@@ -133,12 +159,15 @@ namespace Chirality
 
         private static NoteData Mirror_Horizontal_Note(NoteData noteData, int num_lines, bool flip_lines, bool is_ME)
         {
-            int h_lineIndex;
+            int h_lineIndex; // = Check_Index(noteData.lineIndex);
+            //bool index_ok = Check_Index(noteData.lineIndex, out h_lineIndex);
+
             if (noteData.lineIndex > 10 || noteData.lineIndex < 0)
             {
+                //h_lineIndex = noteData.lineIndex / 1000;
                 h_lineIndex = rand.Next(4); // ME chaos mode kekeke
             }
-            else if (flip_lines)
+            else if (flip_lines)// && h_lineIndex == noteData.lineIndex)
             {
                 h_lineIndex = num_lines - 1 - noteData.lineIndex;
             }
@@ -153,7 +182,7 @@ namespace Chirality
                 h_cutDirection = Get_Random_Direction();
             }
 
-            NoteData h_noteData = NoteData.CreateBasicNoteData(noteData.time, h_lineIndex, noteData.noteLineLayer, noteData.colorType.Opposite(), h_cutDirection);
+            NoteData h_noteData = NoteData.CreateBasicNoteData(noteData.time, h_lineIndex, Check_Layer(noteData.noteLineLayer), noteData.colorType.Opposite(), h_cutDirection);
 
             return h_noteData;
         }
@@ -199,12 +228,13 @@ namespace Chirality
 
         private static NoteData Mirror_Vertical_Note(NoteData noteData, bool flip_rows, bool has_ME)
         {
-            NoteLineLayer v_noteLinelayer;
+            NoteLineLayer v_noteLinelayer;// = Check_Layer(noteData.noteLineLayer);
+
             if ((int)noteData.noteLineLayer > 2)
             {
                 v_noteLinelayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
             }
-            else if (flip_rows)
+            else if (flip_rows)// && v_noteLinelayer == noteData.noteLineLayer)
             {
                v_noteLinelayer = (NoteLineLayer)(3 - 1 - (int)noteData.noteLineLayer);
             }
@@ -219,7 +249,7 @@ namespace Chirality
                 v_cutDirection = Get_Random_Direction();
             }
 
-            NoteData v_noteData = NoteData.CreateBasicNoteData(noteData.time, noteData.lineIndex, v_noteLinelayer, noteData.colorType, v_cutDirection);
+            NoteData v_noteData = NoteData.CreateBasicNoteData(noteData.time, Check_Index(noteData.lineIndex), v_noteLinelayer, noteData.colorType, v_cutDirection);
 
             return v_noteData;
         }
