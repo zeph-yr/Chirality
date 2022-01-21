@@ -97,34 +97,6 @@ namespace Chirality
             return Mirror_Vertical(Mirror_Horizontal(beatmapData, flip_lines, remove_walls, is_ME), flip_rows, remove_walls, is_ME);
         }
 
-        internal static int Check_Index(int lineIndex)//, out int lineIndex_2)
-        {
-            if (lineIndex > 10 || lineIndex < 0)
-            {
-                return rand.Next(4);
-                //lineIndex_2 = rand.Next(4);
-                //return false; // ME chaos mode
-            }
-
-            return lineIndex;
-            //lineIndex_2 = lineIndex;
-            //return true;
-        }
-
-        internal static NoteLineLayer Check_Layer(NoteLineLayer lineLayer)//, out NoteLineLayer lineLayer_2)
-        {
-            if ((int)lineLayer > 2)
-            {
-                return (NoteLineLayer)rand.Next(3); // ME chaos mode
-                //lineLayer_2 = (NoteLineLayer)rand.Next(3); // ME chaos mode
-                //return false;
-            }
-
-            return lineLayer;
-            //lineLayer_2 = lineLayer;
-            //return true;
-        }
-
         internal static NoteCutDirection Get_Random_Direction()
         {
             int index = rand.Next(directions.Count);
@@ -159,15 +131,15 @@ namespace Chirality
 
         private static NoteData Mirror_Horizontal_Note(NoteData noteData, int num_lines, bool flip_lines, bool is_ME)
         {
-            int h_lineIndex; // = Check_Index(noteData.lineIndex);
-            //bool index_ok = Check_Index(noteData.lineIndex, out h_lineIndex);
+            int h_lineIndex;
 
+            // Note: Not worth it to write this block to reuse the check function because we must account for not possibly flipping lines
             if (noteData.lineIndex > 10 || noteData.lineIndex < 0)
             {
                 //h_lineIndex = noteData.lineIndex / 1000;
                 h_lineIndex = rand.Next(4); // ME chaos mode kekeke
             }
-            else if (flip_lines)// && h_lineIndex == noteData.lineIndex)
+            else if (flip_lines)
             {
                 h_lineIndex = num_lines - 1 - noteData.lineIndex;
             }
@@ -228,13 +200,14 @@ namespace Chirality
 
         private static NoteData Mirror_Vertical_Note(NoteData noteData, bool flip_rows, bool has_ME)
         {
-            NoteLineLayer v_noteLinelayer;// = Check_Layer(noteData.noteLineLayer);
+            NoteLineLayer v_noteLinelayer;
 
-            if ((int)noteData.noteLineLayer > 2)
+            // Note: Not worth it to write this block to reuse the check function because we must account for not possibly flipping rows
+            if ((int)noteData.noteLineLayer > 2) 
             {
                 v_noteLinelayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
             }
-            else if (flip_rows)// && v_noteLinelayer == noteData.noteLineLayer)
+            else if (flip_rows)
             {
                v_noteLinelayer = (NoteLineLayer)(3 - 1 - (int)noteData.noteLineLayer);
             }
@@ -263,6 +236,29 @@ namespace Chirality
             }
 
             return obstacleData;
+        }
+        #endregion
+
+
+        #region "Check Functions"
+        internal static int Check_Index(int lineIndex)
+        {
+            if (lineIndex > 10 || lineIndex < 0)
+            {
+                return rand.Next(4);
+            }
+
+            return lineIndex;
+        }
+
+        internal static NoteLineLayer Check_Layer(NoteLineLayer lineLayer)
+        {
+            if ((int)lineLayer > 2)
+            {
+                return (NoteLineLayer)rand.Next(3); // ME chaos mode
+            }
+
+            return lineLayer;
         }
         #endregion
     }
