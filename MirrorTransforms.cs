@@ -129,19 +129,23 @@ namespace Chirality
         }
 
 
-        private static NoteData Mirror_Horizontal_Note(NoteData noteData, int num_lines, bool flip_lines, bool is_ME)
+        private static NoteData Mirror_Horizontal_Note(NoteData noteData, int numberOfLines, bool flip_lines, bool is_ME)
         {
             int h_lineIndex;
 
             // Note: Not worth it to write this block to reuse the check function because we must account for not possibly flipping lines
-            if (noteData.lineIndex > 10 || noteData.lineIndex < 0)
+            if (noteData.lineIndex >= 500 || noteData.lineIndex <= -500)
+            {
+                h_lineIndex = noteData.lineIndex / 1000;
+            }
+            /*if (noteData.lineIndex > 10 || noteData.lineIndex < 0)
             {
                 //h_lineIndex = noteData.lineIndex / 1000;
                 h_lineIndex = rand.Next(4); // ME chaos mode kekeke
-            }
+            }*/
             else if (flip_lines)
             {
-                h_lineIndex = num_lines - 1 - noteData.lineIndex;
+                h_lineIndex = numberOfLines - 1 - noteData.lineIndex;
             }
             else
             {
@@ -160,12 +164,12 @@ namespace Chirality
         }
 
 
-        private static ObstacleData Mirror_Horizontal_Obstacle(ObstacleData obstacleData, int num_lines, bool flip_lines)
+        private static ObstacleData Mirror_Horizontal_Obstacle(ObstacleData obstacleData, int numberOfLines, bool flip_lines)
         {
             ObstacleData h_obstacleData;
             if (flip_lines && obstacleData.obstacleType == ObstacleType.FullHeight)
             {
-                h_obstacleData = new ObstacleData(obstacleData.time, num_lines - obstacleData.width - obstacleData.lineIndex, ObstacleType.FullHeight, obstacleData.duration, obstacleData.width);
+                h_obstacleData = new ObstacleData(obstacleData.time, numberOfLines - obstacleData.width - obstacleData.lineIndex, ObstacleType.FullHeight, obstacleData.duration, obstacleData.width);
                 return h_obstacleData;
             }
 
@@ -203,13 +207,17 @@ namespace Chirality
             NoteLineLayer v_noteLinelayer;
 
             // Note: Not worth it to write this block to reuse the check function because we must account for not possibly flipping rows
-            if ((int)noteData.noteLineLayer > 2) 
+            if ((int)noteData.noteLineLayer >= 500 || (int)noteData.noteLineLayer <= -500)
+            {
+                v_noteLinelayer = (NoteLineLayer)((int)noteData.noteLineLayer / 1000);
+            }
+            /*if ((int)noteData.noteLineLayer > 2) 
             {
                 v_noteLinelayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
-            }
+            }*/
             else if (flip_rows)
             {
-               v_noteLinelayer = (NoteLineLayer)(3 - 1 - (int)noteData.noteLineLayer);
+                v_noteLinelayer = (NoteLineLayer)(3 - 1 - (int)noteData.noteLineLayer);
             }
             else
             {
@@ -243,9 +251,10 @@ namespace Chirality
         #region "Check Functions"
         internal static int Check_Index(int lineIndex)
         {
-            if (lineIndex > 10 || lineIndex < 0)
+            if (lineIndex >= 500 || lineIndex <= -500)
             {
-                return rand.Next(4);
+                return lineIndex / 1000;
+                //return rand.Next(4);
             }
 
             return lineIndex;
@@ -253,9 +262,10 @@ namespace Chirality
 
         internal static NoteLineLayer Check_Layer(NoteLineLayer lineLayer)
         {
-            if ((int)lineLayer > 2)
+            if ((int)lineLayer >= 500 || (int)lineLayer <= -500)
             {
-                return (NoteLineLayer)rand.Next(3); // ME chaos mode
+                return (NoteLineLayer)((int)lineLayer / 1000);
+                //return (NoteLineLayer)rand.Next(3); // ME chaos mode
             }
 
             return lineLayer;
