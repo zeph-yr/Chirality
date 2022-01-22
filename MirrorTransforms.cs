@@ -133,16 +133,22 @@ namespace Chirality
         {
             int h_lineIndex;
 
-            // Note: Not worth it to write this block to reuse the check function because we must account for not possibly flipping lines
-            if (noteData.lineIndex >= 500 || noteData.lineIndex <= -500)
+            // Extended maps will not have lines flipped (lazy to do the math) but their colors will
+            // Yes, it will be weird, hence chaos mode
+            // Also Note: Not worth reusing check function because non-extend block will become unnecessarily complicated
+
+            if (noteData.lineIndex >= 1000 || noteData.lineIndex <= -1000)
             {
-                h_lineIndex = noteData.lineIndex / 1000;
+                h_lineIndex = noteData.lineIndex / 1000 - 1; // Definition from ME
             }
-            /*if (noteData.lineIndex > 10 || noteData.lineIndex < 0)
+
+            /*if (noteData.lineIndex > 10 || noteData.lineIndex < 0) // Note: This isn't a robust way to check for extended maps
             {
                 //h_lineIndex = noteData.lineIndex / 1000;
-                h_lineIndex = rand.Next(4); // ME chaos mode kekeke
+                h_lineIndex = rand.Next(4); // ME chaos mode kekeke turns out this 
             }*/
+
+            // Option to only flip non-extended maps 
             else if (flip_lines)
             {
                 h_lineIndex = numberOfLines - 1 - noteData.lineIndex;
@@ -206,10 +212,9 @@ namespace Chirality
         {
             NoteLineLayer v_noteLinelayer;
 
-            // Note: Not worth it to write this block to reuse the check function because we must account for not possibly flipping rows
-            if ((int)noteData.noteLineLayer >= 500 || (int)noteData.noteLineLayer <= -500)
+            if ((int)noteData.noteLineLayer >= 1000 || (int)noteData.noteLineLayer <= -1000)
             {
-                v_noteLinelayer = (NoteLineLayer)((int)noteData.noteLineLayer / 1000);
+                v_noteLinelayer = (NoteLineLayer)((int)noteData.noteLineLayer / 1000) - 1;
             }
             /*if ((int)noteData.noteLineLayer > 2) 
             {
