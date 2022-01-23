@@ -8,8 +8,8 @@ namespace Chirality
 {
     class ModUI : NotifiableSingleton<ModUI>
     {
-        internal static StandardLevelDetailViewController standardLevelDetailViewController;
-        internal static StandardLevelDetailView standardLevelDetailView;
+        //internal static StandardLevelDetailViewController standardLevelDetailViewController;
+        //internal static StandardLevelDetailView standardLevelDetailView;
 
         public ModUI()
         {

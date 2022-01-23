@@ -133,9 +133,10 @@ namespace Chirality
         {
             int h_lineIndex;
 
-            // Extended maps will not have lines flipped (lazy to do the math) but their colors will
-            // Yes, it will be weird, hence chaos mode
-            // Also Note: Not worth reusing check function because non-extend block will become unnecessarily complicated
+            // Precision maps will not have indexes flipped (complicated math) but their colors will
+            // Yes, it will be weird like streams will zigzag in the wrong direction...hence introducing chaos mode. Might as well make use of the weirdness!
+            // Other option is to just not support ME and NE maps
+            // Also Note: Not worth reusing check function because non-extended map block will become unnecessarily complicated
 
             if (noteData.lineIndex >= 1000 || noteData.lineIndex <= -1000)
             {
@@ -145,11 +146,11 @@ namespace Chirality
             // Keep This Note: This isn't a robust way to check for extended maps
             /*if (noteData.lineIndex > 10 || noteData.lineIndex < 0) 
             {
-                //h_lineIndex = noteData.lineIndex / 1000;
                 h_lineIndex = rand.Next(4); // ME chaos mode kekeke turns out this is too chaotic, not that fun
             }*/
 
-            // Option to only flip non-extended maps 
+            // Only non-precision-placement maps can have the option to be index flipped
+            // Maps with extended non-precision-placement indexes are handled properly by numberOfLines
             else if (flip_lines)
             {
                 h_lineIndex = numberOfLines - 1 - noteData.lineIndex;
@@ -211,23 +212,30 @@ namespace Chirality
 
         private static NoteData Mirror_Vertical_Note(NoteData noteData, bool flip_rows, bool has_ME)
         {
-            NoteLineLayer v_noteLinelayer;
+            NoteLineLayer v_noteLineLayer;
 
+            // All precision placements will not be layer-flipped (complicated math)
+            // This could be weird, consider it part of chaos mode KEK
             if ((int)noteData.noteLineLayer >= 1000 || (int)noteData.noteLineLayer <= -1000)
             {
-                v_noteLinelayer = (NoteLineLayer)((int)noteData.noteLineLayer / 1000) - 1;
+                v_noteLineLayer = (NoteLineLayer)((int)noteData.noteLineLayer / 1000) - 1; // Definition from ME
             }
-            /*if ((int)noteData.noteLineLayer > 2) 
+
+            // Keep This Note: This is not a robust way to check for extended maps (see above)
+            /*if ((int)noteData.noteLineLayer > 2)
             {
-                v_noteLinelayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
+                v_noteLineLayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
             }*/
+
+            // Only non-precision-placement maps can have the option to be layer flipped
+            // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
             else if (flip_rows)
             {
-                v_noteLinelayer = (NoteLineLayer)(3 - 1 - (int)noteData.noteLineLayer);
+                v_noteLineLayer = (NoteLineLayer)(3 - 1 - (int)noteData.noteLineLayer);
             }
             else
             {
-                v_noteLinelayer = noteData.noteLineLayer;
+                v_noteLineLayer = noteData.noteLineLayer;
             }
 
             NoteCutDirection v_cutDirection;
@@ -236,7 +244,7 @@ namespace Chirality
                 v_cutDirection = Get_Random_Direction();
             }
 
-            NoteData v_noteData = NoteData.CreateBasicNoteData(noteData.time, Check_Index(noteData.lineIndex), v_noteLinelayer, noteData.colorType, v_cutDirection);
+            NoteData v_noteData = NoteData.CreateBasicNoteData(noteData.time, Check_Index(noteData.lineIndex), v_noteLineLayer, noteData.colorType, v_cutDirection);
 
             return v_noteData;
         }
@@ -260,7 +268,7 @@ namespace Chirality
             if (lineIndex >= 500 || lineIndex <= -500)
             {
                 return lineIndex / 1000;
-                //return rand.Next(4);
+                //return rand.Next(4); // ME chaos mode
             }
 
             return lineIndex;
