@@ -41,7 +41,8 @@ namespace Chirality
         }
 
 
-        // For in-game mode switching, but the anti-rabbit-multiplier is needed stops this from working on maps that already have recently generated diffs
+        // Was for in-game mode switching, but the anti-rabbit-multiplier is needed, which stops this from working immediately on maps that already have recently generated diffs
+        // 13 unique map selections are needed to refresh the buffer of loaded songs before the new mode can be applied to a map with previously generated diffs, so...
         // May be too confusing for player. Restarting game to switch modes may be more easily understood
         /*
         [UIValue("increment_value")]

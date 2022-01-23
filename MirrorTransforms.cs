@@ -142,10 +142,11 @@ namespace Chirality
                 h_lineIndex = noteData.lineIndex / 1000 - 1; // Definition from ME
             }
 
-            /*if (noteData.lineIndex > 10 || noteData.lineIndex < 0) // Note: This isn't a robust way to check for extended maps
+            // Keep This Note: This isn't a robust way to check for extended maps
+            /*if (noteData.lineIndex > 10 || noteData.lineIndex < 0) 
             {
                 //h_lineIndex = noteData.lineIndex / 1000;
-                h_lineIndex = rand.Next(4); // ME chaos mode kekeke turns out this 
+                h_lineIndex = rand.Next(4); // ME chaos mode kekeke turns out this is too chaotic, not that fun
             }*/
 
             // Option to only flip non-extended maps 

@@ -19,7 +19,8 @@ OneSaber | 1
 NoArrows | 2
 Lawless | 3
 - To enable or disable the mod, close game, edit the 'enabled' field in `/Beat Saber/UserData/Chirality.json` to `true` or `false` and restart game
-- Mirrored maps are not active in Multiplayer, however those generated in Solo will be displayed. To avoid confusion, it is recommended to restart the game before going into MP: this will clear them from the display 
+- Mirrored maps are not active in Multiplayer, however those generated in Solo will be displayed. To avoid confusion, it is recommended to restart the game before going into MP: this will clear them from the display
+- Requires: BS_Utils, BSML, SongCore
 
 ## Scores
 - Scores will submit to ScoreSaber under separate game mode leaderboards that everyone with this mod can play on!
@@ -27,7 +28,7 @@ Lawless | 3
 - **For example:** You set scores on InvertStandard then switch to play InvertOneSaber. Your scores set on InvertStandard will be hidden and the leaderboard will show the InvertOneSaber scores. To see the InvertStandard scores again, switch back to Standard mode.
 
 ## Things To Note
-- Walls in Noodle and ME maps are removed. There is a special mode for ME and some Noodle maps 😁
+- Walls in Noodle and ME maps are removed. There is a special mode for ME and maps with precision placement 😁
 - Can stutter in menu when selecting maps with excessive events or objects (Chroma, Wall-art maps). This is expected, wait for it to finish loading
 
 ## What's In The Name?
