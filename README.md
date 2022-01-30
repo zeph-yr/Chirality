@@ -4,7 +4,7 @@
 
 Or, ever played true acc in the sky?
 
-**A mod that generates mirrored (horizontally, vertically, or inverse) maps for for any non-360/90 map.
+**A mod that generates inverted (horizontally, vertically, or mirror-inverse) maps for for any non-360/90 map.
 Available for Standard, One Saber, No Arrows and Lawless modes in Solo with ScoreSaber submission, Party Mode, OST and select DLCs. Each map can potentially generate 12 new difficulties!**
 
 <p>
@@ -16,22 +16,15 @@ Available for Standard, One Saber, No Arrows and Lawless modes in Solo with Scor
 ## How To Use
 - Place Chirality.dll in Plugins folder
 - Click on any map, try the three new game modes and have fun! Inverse can be pure chaos for some maps ^^
-- To change the game mode diffs that the mod will apply the mirroring to: Close game, edit `mode` field in `/Beat Saber/UserData/Chirality.json` to one of the values below, and restart game
-
-Game Mode | Value
---- | ---
-Standard | 0
-OneSaber | 1
-NoArrows | 2
-Lawless | 3
-- To enable or disable the mod: Close game, edit 'enabled' field in `/Beat Saber/UserData/Chirality.json` to `true` or `false` and restart game
+- To change the game mode diffs that the mod will apply the mirroring to: Go to Mod Settings. You must click OK to apply the changes. Changing modes for OST/DLC requires a game restart after clicking OK to take effect.
+- To enable or disable the mod: Go to Mod Settings. You must click OK to apply the changes.
 - Mirrored maps are not active in Multiplayer, however those generated in Solo will be displayed. To avoid confusion, it is recommended to restart the game before going into MP: This will clear them from the display
 - Requires: BS_Utils, BSML, SongCore. BS 1.18.0+
 
 ## Scores
 - Scores will post to ScoreSaber under separate game mode leaderboards that everyone with this mod can play on!
 - Leaderboards for both ScoreSaber and Party Mode will change when switching game modes. They are saved and you can view them by selecting the corresponding game mode
-- **For example:** You set scores on InvertStandard then switch to play InvertOneSaber. Your scores set on InvertStandard will be hidden and the leaderboard will show the InvertOneSaber scores. To see the InvertStandard scores again, switch back to Standard mode.
+- **For example:** You set scores on InverseStandard then switch to play InverseOneSaber. Your scores set on InverseStandard will be hidden and the leaderboard will show the InverseOneSaber scores. To see the InverseStandard scores again, switch back to Standard mode.
 
 ## Things To Note
 - Walls in Noodle and ME maps are removed. There is a special mo`de for ME and maps with precision placement 😁
