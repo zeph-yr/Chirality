@@ -27,7 +27,8 @@ Available for Standard, One Saber, No Arrows and Lawless modes in Solo with Scor
 ## Scores
 - Scores will post to ScoreSaber under separate game mode leaderboards that everyone with this mod can play on!
 - Leaderboards for both ScoreSaber and Party Mode will change when switching game modes. They are saved and you can view them by selecting the corresponding game mode
-- **For example:** You set scores on InverseStandard then switch to play InverseOneSaber. Your scores set on InverseStandard will be hidden and the leaderboard will show the InverseOneSaber scores. To see the InverseStandard scores again, switch back to Standard mode.
+- **For example:** You set scores on InverseStandard then switch to play InverseOneSaber. Your scores set on InverseStandard will be hidden and the leaderboard will show the InverseOneSaber scores. To see the InverseStandard scores again, switch back to Standard mode in Mod Settings.
+- OST/DLC leaderboard is local Solo and Party Mode only
 
 ## Things To Note
 - Walls in Noodle and ME maps are removed. There is a special mode for ME and maps with precision placement 😁
