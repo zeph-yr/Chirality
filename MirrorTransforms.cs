@@ -132,6 +132,7 @@ namespace Chirality
         private static NoteData Mirror_Horizontal_Note(NoteData noteData, int numberOfLines, bool flip_lines, bool is_ME)
         {
             int h_lineIndex;
+            ColorType color = noteData.colorType.Opposite();
 
             // Precision maps will not have indexes flipped (complicated math) but their colors will
             // Yes, it will be weird like streams will zigzag in the wrong direction...hence introducing chaos mode. Might as well make use of the weirdness!
@@ -158,6 +159,7 @@ namespace Chirality
             else
             {
                 h_lineIndex = noteData.lineIndex;
+                color = noteData.colorType;
             }
 
             NoteCutDirection h_cutDirection; // Yes, this is support for precision placement and ME LOL
@@ -166,7 +168,7 @@ namespace Chirality
                 h_cutDirection = Get_Random_Direction();
             }
 
-            NoteData h_noteData = NoteData.CreateBasicNoteData(noteData.time, h_lineIndex, Check_Layer(noteData.noteLineLayer), noteData.colorType.Opposite(), h_cutDirection);
+            NoteData h_noteData = NoteData.CreateBasicNoteData(noteData.time, h_lineIndex, Check_Layer(noteData.noteLineLayer), color, h_cutDirection);
 
             return h_noteData;
         }

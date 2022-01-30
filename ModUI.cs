@@ -1,16 +1,11 @@
-﻿using System.Linq;
-using BeatSaberMarkupLanguage.Attributes;
+﻿using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using Chirality.Configuration;
-using UnityEngine;
 
 namespace Chirality
 {
     class ModUI : NotifiableSingleton<ModUI>
     {
-        //internal static StandardLevelDetailViewController standardLevelDetailViewController;
-        //internal static StandardLevelDetailView standardLevelDetailView;
-
         public ModUI()
         {
 
@@ -67,44 +62,10 @@ namespace Chirality
             set
             {
                 PluginConfig.Instance.mode = value;
-
-                // This approach doesn'ts work:
-                //standardLevelDetailViewController = Resources.FindObjectsOfTypeAll<StandardLevelDetailViewController>().FirstOrDefault();
-                //standardLevelDetailView = Resources.FindObjectsOfTypeAll<StandardLevelDetailView>().FirstOrDefault();
-
-                //standardLevelDetailViewController.ClearSelected();
-                //standardLevelDetailViewController.RefreshContentLevelDetailView();
-
-                //standardLevelDetailView.ClearContent();
-                //standardLevelDetailView.RefreshContent();
-    
-                //SongCore.Loader loader = Resources.FindObjectsOfTypeAll<SongCore.Loader>().FirstOrDefault();
-                //loader.RefreshSongs();
             }
         }
 
         [UIAction("increment_formatter")]
         private string Increment_Formatter(int value) => ((PreferenceEnum)value).ToString();
-
-        //<increment-setting value='increment_value' apply-on-change='true' bind-value='true' text='Mode' integer-only='true' min='0' max='3' formatter='increment_formatter'/>
-        /*<horizontal>
-            <text text = 'Current Mode' ></ text >
-            < text text='  |  ' font-color='#ffffffff'></text>
-            <text text='~mode' hover-hint='ME and Noodle maps may be a surprise. Please play responsibly.'></text>
-        </horizontal>*/
-
-        /*<horizontal>
-            <text text='~enabled' font-color='#8c8c8cff' font-size='3'></text>
-        </horizontal>*/
+    }
 }
-}
-
-/*			<horizontal preferred-width='70' child-control-width='true'>
-				<text text='To change modes, set mode in Chirality.json to 0 [Standard], 1 [OneSaber],' font-color='#ffff00ff' font-size='3'></text>
-			</horizontal>
-			<horizontal preferred-width='70' child-control-width='true'>
-				<text text='2 [NoArrows], or 3 [Lawless], then your restart game.' font-color='#ffff00ff' font-size='3'></text>
-			</horizontal>
-			<horizontal preferred-width='70' child-control-width='true'>
-'#8c8c8cff'
-*/

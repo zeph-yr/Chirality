@@ -16,10 +16,6 @@ namespace Chirality
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Log { get; private set; }
 
-        //public BeatmapCharacteristicSO h_beatmapCharacteristicSO;
-        //public BeatmapCharacteristicSO v_beatmapCharacteristicSO;
-        //public BeatmapCharacteristicSO i_beatmapCharacteristicSO;
-
 
         [Init]
         public Plugin(IPALogger logger, Config conf)
@@ -30,15 +26,6 @@ namespace Chirality
 
             Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
             Plugin.Log?.Debug("Config loaded");
-
-
-            /*Texture2D texture = new Texture2D(50, 50);
-            Sprite icon = Sprite.Create(texture, new Rect(0f, 0f, 50, 50), new Vector2(0.5f, 0.5f));
-
-            h_beatmapCharacteristicSO = SongCore.Collections.RegisterCustomCharacteristic(icon, "Horizontal", "Mirror Horizontally", "Horizontal", "Horizontal");
-            v_beatmapCharacteristicSO = SongCore.Collections.RegisterCustomCharacteristic(icon, "Vertical", "Mirror Vertically", "Vertical", "Vertical");
-            i_beatmapCharacteristicSO = SongCore.Collections.RegisterCustomCharacteristic(icon, "Invert", "Invert", "Invert", "Invert");
-            */
         }
 
         
