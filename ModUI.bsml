@@ -1,27 +1,22 @@
 ﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<vertical vertical-fit='PreferredSize' preferred-height='65'>
+	<vertical vertical-fit='PreferredSize' preferred-height='55'>
 		
-		<vertical vertical-fit='PreferredSize' preferred-height='15'>
-			<horizontal preferred-width='70' child-control-width='true'>
-				<text text='To change modes, set mode in Chirality.json to 0 [Standard], 1 [OneSaber],' font-color='#ffff00ff' font-size='3'></text>
+		<vertical vertical-fit='PreferredSize' preferred-height='10'>
+			<horizontal>
+				<text text='It is recommended to restart game before switching to Multiplayer' font-color='#ffff00ff' font-size='3' align='Center'></text>
 			</horizontal>
-			<horizontal preferred-width='70' child-control-width='true'>
-				<text text='2 [NoArrows], or 3 [Lawless], then your restart game.' font-color='#ffff00ff' font-size='3'></text>
-			</horizontal>
-			<horizontal preferred-width='70' child-control-width='true'>
-				<text text='It is recommended to restart game before switching to Multiplayer.' font-color='#8c8c8cff' font-size='3'></text>
+			<horizontal>
+				<text text='Switching modes for OST / DLC requires game restart' font-color='#ffff00ff' font-size='3' align='Center'></text>
 			</horizontal>
 		</vertical>
-
-		<horizontal>
-			<text text='Current Mode'></text>
-			<text text='  |  ' font-color='#ffffffff'></text>
-			<text text='~mode' hover-hint='ME and Noodle maps may be a surprise. Please play responsibly.'></text>
-		</horizontal>
 		
-		<horizontal>
-			<text text='~enabled' font-color='#8c8c8cff' font-size='3'></text>
-		</horizontal>
+			<horizontal>
+				<text text='You must press OK to apply changes!' font-color='#ffff00ff' font-size='3' align='Center'></text>
+			</horizontal>
+
+
+		<increment-setting value='increment_value' apply-on-change='false' bind-value='true' text='Current Mode' integer-only='true' min='0' max='3' formatter='increment_formatter' hover-hint='ME and Noodle maps may be a surprise. Please play responsibly.'/>
+		<checkbox-setting value ='enabled' on-change='set_enabled' text='Mod Enabled'></checkbox-setting>
 
 		<horizontal>
 			<text text='Special request from Aroc. Thanks!' font-color='#ffff00ff' font-size='3' align='Center'></text>

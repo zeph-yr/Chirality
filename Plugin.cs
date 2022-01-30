@@ -50,9 +50,10 @@ namespace Chirality
 
             ApplyHarmonyPatches();
 
+            BeatSaberMarkupLanguage.Settings.BSMLSettings.instance.AddSettingsMenu("Chirality", "Chirality.ModUI.bsml", ModUI.instance);
             //if (PluginConfig.Instance.enabled)
             //{
-                BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.instance.AddTab("Chirality", "Chirality.ModUI.bsml", ModUI.instance, BeatSaberMarkupLanguage.GameplaySetup.MenuType.Solo);
+                //BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.instance.AddTab("Chirality", "Chirality.ModUI.bsml", ModUI.instance, BeatSaberMarkupLanguage.GameplaySetup.MenuType.Solo);
             //}
         }
 
