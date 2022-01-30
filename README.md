@@ -16,10 +16,13 @@ Available for Standard, One Saber, No Arrows and Lawless modes in Solo with Scor
 ## How To Use
 - Place Chirality.dll in Plugins folder
 - Click on any map, try the three new game modes and have fun! Inverse can be pure chaos for some maps ^^
-- To change the game mode diffs that the mod will apply the mirroring to: Go to Mod Settings. You must click OK to apply the changes. Changing modes for OST/DLC requires a game restart after clicking OK to take effect.
-- To enable or disable the mod: Go to Mod Settings. You must click OK to apply the changes.
-- Mirrored maps are not active in Multiplayer, however those generated in Solo will be displayed. To avoid confusion, it is recommended to restart the game before going into MP: This will clear them from the display
 - Requires: BS_Utils, BSML, SongCore. BS 1.18.0+
+
+**Use Mod Settings Menu:**
+- To change the game mode diffs that the mod will apply the mirroring to
+- To enable and disable the mod
+- **You must click OK to apply the changes. Changing modes for OST/DLC requires a game restart after clicking OK to take effect.**
+- Mirrored maps are not active in Multiplayer, however those generated in Solo will be displayed. To avoid confusion, it is recommended to restart the game before going into MP: This will clear them from the display
 
 ## Scores
 - Scores will post to ScoreSaber under separate game mode leaderboards that everyone with this mod can play on!
