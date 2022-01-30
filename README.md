@@ -4,7 +4,7 @@
 
 Or, ever played true acc in the sky?
 
-**A mod that generates inverted (horizontally, vertically, or mirror-inverse) maps for for any non-360/90 map.
+**A mod that generates inverted (horizontally, vertically, or mirror-inverse) maps for any non-360/90 map.
 Available for Standard, One Saber, No Arrows and Lawless modes in Solo with ScoreSaber submission, Party Mode, OST and select DLCs. Each map can potentially generate 12 new difficulties!**
 
 <p>
@@ -31,7 +31,7 @@ Available for Standard, One Saber, No Arrows and Lawless modes in Solo with Scor
 - Can lag in menu when selecting maps with excessive events and objects (Chroma, wall maps). This is expected, please wait for it to finish loading
 
 ## What's In The Name?
-/kaɪˈrælɪtiː/ Chirality is a geometric property where an object cannot be superimposed on its mirror image by any translation or rotation. It is important to chemistry, biology, phyics, and math. Learn more about it here https://en.wikipedia.org/wiki/Chirality_(chemistry)
+/kaɪˈrælɪtiː/ Chirality is a geometric property where an object cannot be superimposed on its mirror image by any translation or rotation. It is important to chemistry, biology, physics, and math. Learn more about it here https://en.wikipedia.org/wiki/Chirality_(chemistry)
 
 ## About
 Comm'ed by Aroc. Thank you so much for your support! <3 Developing this mod was a fun challenge. I hope you enjoy playing the game with it as much as I enjoyed making it.
