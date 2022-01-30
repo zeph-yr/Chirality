@@ -27,7 +27,7 @@ Available for Standard, One Saber, No Arrows and Lawless modes in Solo with Scor
 - **For example:** You set scores on InverseStandard then switch to play InverseOneSaber. Your scores set on InverseStandard will be hidden and the leaderboard will show the InverseOneSaber scores. To see the InverseStandard scores again, switch back to Standard mode.
 
 ## Things To Note
-- Walls in Noodle and ME maps are removed. There is a special mo`de for ME and maps with precision placement 😁
+- Walls in Noodle and ME maps are removed. There is a special mode for ME and maps with precision placement 😁
 - Can lag in menu when selecting maps with excessive events and objects (Chroma, wall maps). This is expected, please wait for it to finish loading
 
 ## What's In The Name?
