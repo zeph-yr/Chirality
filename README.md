@@ -5,7 +5,7 @@
 Or, ever played true acc in the sky?
 
 **A mod that generates inverted (horizontally, vertically, or mirror-inverse) maps for any non-360/90 map.
-Available for Standard, One Saber, No Arrows and Lawless modes in Solo with ScoreSaber submission, Party Mode, OST and select DLCs. Each map can potentially generate 12 new difficulties!**
+Available for Standard, One Saber, No Arrows and Lawless modes in Solo with ScoreSaber submission, Party Mode, OST and select DLCs. Each map can potentially generate 60 new difficulties!**
 
 <p>
   <img src="https://github.com/zeph-yr/Chirality/blob/ME_Noodle/Screenshots/menu_4_small.png"/ width="1080"><br>
