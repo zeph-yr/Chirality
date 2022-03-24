@@ -1,9 +1,4 @@
-﻿using BeatmapSaveDataVersion3;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Chirality
 {
@@ -17,46 +12,90 @@ namespace Chirality
         internal static Dictionary<NoteCutDirection, NoteCutDirection> vertical_cut_transform;
 
 
-        internal static BeatmapSaveData Mirror_Horizontal(BeatmapSaveData beatmapSaveData, int numberOfLines, bool flip_lines, bool remove_walls, bool is_ME)
+        internal static BeatmapData Mirror_Horizontal(BeatmapData beatmapData, bool flip_lines, bool remove_walls, bool is_ME)
         {
-            // Bombs:
-            List<BeatmapSaveData.BombNoteData> h_bombNotes = new List<BeatmapSaveData.BombNoteData>();
-            foreach (BeatmapSaveData.BombNoteData bombNoteData in beatmapSaveData.bombNotes)
-            {
-                if (flip_lines == false)
+			//Plugin.Log.Debug("Mirror Horizontal");
+
+			int numberOfLines = beatmapData.numberOfLines;
+			BeatmapData h_beatmapData = new BeatmapData(numberOfLines);
+
+			foreach (BeatmapObjectData beatmapObjectData in beatmapData.beatmapObjectsData)
+			{
+                NoteData noteData;
+                if ((noteData = (beatmapObjectData as NoteData)) != null)
                 {
-                    h_bombNotes.Add(new BeatmapSaveData.BombNoteData(bombNoteData.beat, bombNoteData.line, bombNoteData.layer));
+                    h_beatmapData.AddBeatmapObjectData(Mirror_Horizontal_Note(noteData, numberOfLines, flip_lines, is_ME));
                 }
-                else
+
+                if (remove_walls == false)
                 {
-                    h_bombNotes.Add(new BeatmapSaveData.BombNoteData(bombNoteData.beat, numberOfLines - 1 - bombNoteData.line, bombNoteData.layer));
+                    ObstacleData obstacleData;
+                    if ((obstacleData = (beatmapObjectData as ObstacleData)) != null)
+                    {
+                        h_beatmapData.AddBeatmapObjectData(Mirror_Horizontal_Obstacle(obstacleData, numberOfLines, flip_lines));
+                    }
                 }
             }
 
-            // ColorNotes:
-            List<BeatmapSaveData.ColorNoteData> h_colorNotes = new List<BeatmapSaveData.ColorNoteData>();
-            foreach (BeatmapSaveData.ColorNoteData colorNote in beatmapSaveData.colorNotes)
+            foreach (BeatmapEventData beatmapEventData in beatmapData.beatmapEventsData)
             {
-                h_colorNotes.Add(Mirror_Horizontal_Note(colorNote, numberOfLines, flip_lines, is_ME));
+                h_beatmapData.AddBeatmapEventData(beatmapEventData);
             }
 
+            foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
+            {
+                h_beatmapData.AddAvailableSpecialEventsPerKeyword(keyValuePair.Key, keyValuePair.Value);
+            }
 
-            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, beatmapSaveData.obstacles, beatmapSaveData.sliders, beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords, beatmapSaveData.useNormalEventsAsCompatibleEvents);
-        }
+			return h_beatmapData;
+		}
 
-        internal static BeatmapSaveData Mirror_Vertical(BeatmapSaveData beatmapSaveData, bool flip_rows, bool remove_walls, bool is_ME)
+
+        internal static BeatmapData Mirror_Vertical(BeatmapData beatmapData, bool flip_rows, bool remove_walls, bool is_ME)
         {
+            //Plugin.Log.Debug("Mirror Vertical");
 
-            return beatmapSaveData;
+            int numberOfLines = beatmapData.numberOfLines;
+            BeatmapData v_beatmapData = new BeatmapData(numberOfLines);
+
+            foreach (BeatmapObjectData beatmapObjectData in beatmapData.beatmapObjectsData)
+            {
+                NoteData noteData;
+                if ((noteData = (beatmapObjectData as NoteData)) != null)
+                {
+                    v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Note(noteData, flip_rows, is_ME));
+                }
+
+                if (remove_walls == false)
+                {
+                    ObstacleData obstacleData;
+                    if ((obstacleData = (beatmapObjectData as ObstacleData)) != null)
+                    {
+                        v_beatmapData.AddBeatmapObjectData(Mirror_Vertical_Obstacle(obstacleData, flip_rows));
+                    }
+                }
+            }
+
+            foreach (BeatmapEventData beatmapEventData in beatmapData.beatmapEventsData)
+            {
+                v_beatmapData.AddBeatmapEventData(beatmapEventData);
+            }
+
+            foreach (KeyValuePair<string, HashSet<BeatmapEventType>> keyValuePair in beatmapData.availableSpecialEventsPerKeywordDictionary)
+            {
+                v_beatmapData.AddAvailableSpecialEventsPerKeyword(keyValuePair.Key, keyValuePair.Value);
+            }
+
+            return v_beatmapData;
         }
 
-        /*internal static BeatmapSaveData Mirror_Inverse(BeatmapSaveData beatmapSaveData, bool flip_lines, bool flip_rows, bool remove_walls, bool is_ME)
+
+        internal static BeatmapData Mirror_Inverse(BeatmapData beatmapData, bool flip_lines, bool flip_rows, bool remove_walls, bool is_ME)
         {
             //Plugin.Log.Debug("Mirror Inverse");
-            return Mirror_Vertical(Mirror_Horizontal(beatmapSaveData, flip_lines, remove_walls, is_ME), flip_rows, remove_walls, is_ME);
-        }*/
 
-
+            return Mirror_Vertical(Mirror_Horizontal(beatmapData, flip_lines, remove_walls, is_ME), flip_rows, remove_walls, is_ME);
+        }
 
         internal static NoteCutDirection Get_Random_Direction()
         {
@@ -90,30 +129,19 @@ namespace Chirality
         }
 
 
-        private static BeatmapSaveData.ColorNoteData Mirror_Horizontal_Note(BeatmapSaveData.ColorNoteData colorNoteData, int numberOfLines, bool flip_lines, bool is_ME)
+        private static NoteData Mirror_Horizontal_Note(NoteData noteData, int numberOfLines, bool flip_lines, bool is_ME)
         {
             int h_lineIndex;
-
-            BeatmapSaveData.NoteColorType color;
-            if (colorNoteData.color == BeatmapSaveData.NoteColorType.ColorA)
-            {
-                color = BeatmapSaveData.NoteColorType.ColorB;
-            }
-            else
-            {
-                color = BeatmapSaveData.NoteColorType.ColorA;
-            }
-            //There was a bug where all the ME maps have the colors flipped oops check it again
-
+            ColorType color = noteData.colorType.Opposite();
 
             // Precision maps will not have indexes flipped (complicated math) but their colors will
             // Yes, it will be weird like streams will zigzag in the wrong direction...hence introducing chaos mode. Might as well make use of the weirdness!
             // Other option is to just not support ME and NE maps
             // Also Note: Not worth reusing check function because non-extended map block will become unnecessarily complicated
 
-            if (colorNoteData.line >= 1000 || colorNoteData.line <= -1000)
+            if (noteData.lineIndex >= 1000 || noteData.lineIndex <= -1000)
             {
-                h_lineIndex = colorNoteData.line / 1000 - 1; // Definition from ME
+                h_lineIndex = noteData.lineIndex / 1000 - 1; // Definition from ME
             }
 
             // Keep This Note: This isn't a robust way to check for extended maps
@@ -126,29 +154,27 @@ namespace Chirality
             // Maps with extended non-precision-placement indexes are handled properly by numberOfLines
             else if (flip_lines)
             {
-                h_lineIndex = numberOfLines - 1 - colorNoteData.line;
+                h_lineIndex = numberOfLines - 1 - noteData.lineIndex;
             }
             else
             {
-                h_lineIndex = colorNoteData.line;
-                color = colorNoteData.color;
+                h_lineIndex = noteData.lineIndex;
+                color = noteData.colorType;
             }
 
             NoteCutDirection h_cutDirection; // Yes, this is support for precision placement and ME LOL
-            if (horizontal_cut_transform.TryGetValue(colorNoteData.cutDirection, out h_cutDirection) == false || is_ME)
+            if (horizontal_cut_transform.TryGetValue(noteData.cutDirection, out h_cutDirection) == false || is_ME)
             {
                 h_cutDirection = Get_Random_Direction();
             }
 
-            // Dunno what this is yet
-            int h_angleOffset = colorNoteData.angleOffset;
+            NoteData h_noteData = NoteData.CreateBasicNoteData(noteData.time, h_lineIndex, Check_Layer(noteData.noteLineLayer), color, h_cutDirection);
 
-
-            return new BeatmapSaveData.ColorNoteData(colorNoteData.beat, h_lineIndex, Check_Layer(colorNoteData.layer), color, h_cutDirection, h_angleOffset);
+            return h_noteData;
         }
 
 
-        /*private static ObstacleData Mirror_Horizontal_Obstacle(ObstacleData obstacleData, int numberOfLines, bool flip_lines)
+        private static ObstacleData Mirror_Horizontal_Obstacle(ObstacleData obstacleData, int numberOfLines, bool flip_lines)
         {
             ObstacleData h_obstacleData;
             if (flip_lines && obstacleData.obstacleType == ObstacleType.FullHeight)
@@ -158,7 +184,7 @@ namespace Chirality
             }
 
             return obstacleData;
-        }*/
+        }
         #endregion
 
 
@@ -226,7 +252,7 @@ namespace Chirality
         }
 
 
-        /*private static ObstacleData Mirror_Vertical_Obstacle(ObstacleData obstacleData, bool flip_rows)
+        private static ObstacleData Mirror_Vertical_Obstacle(ObstacleData obstacleData, bool flip_rows)
         {
             if (flip_rows && obstacleData.obstacleType == ObstacleType.Top)
             {
@@ -234,7 +260,7 @@ namespace Chirality
             }
 
             return obstacleData;
-        }*/
+        }
         #endregion
 
 
@@ -250,11 +276,11 @@ namespace Chirality
             return lineIndex;
         }
 
-        internal static int Check_Layer(int lineLayer)
+        internal static NoteLineLayer Check_Layer(NoteLineLayer lineLayer)
         {
-            if (lineLayer >= 500 || lineLayer <= -500)
+            if ((int)lineLayer >= 500 || (int)lineLayer <= -500)
             {
-                return lineLayer / 1000;
+                return (NoteLineLayer)((int)lineLayer / 1000);
                 //return (NoteLineLayer)rand.Next(3); // ME chaos mode
             }
 
