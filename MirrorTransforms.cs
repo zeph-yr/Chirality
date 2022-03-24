@@ -40,8 +40,17 @@ namespace Chirality
                 h_colorNotes.Add(Mirror_Horizontal_Note(colorNote, numberOfLines, flip_lines, is_ME));
             }
 
+            // Obstacles:
+            List<BeatmapSaveData.ObstacleData> h_obstacleDatas = new List<BeatmapSaveData.ObstacleData>();
+            if (remove_walls == false)
+            {
+                foreach (BeatmapSaveData.ObstacleData obstacleData in beatmapSaveData.obstacles)
+                {
+                    h_obstacleDatas.Add(Mirror_Horizontal_Obstacle(obstacleData, numberOfLines, flip_lines));
+                }
+            }
 
-            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, beatmapSaveData.obstacles, beatmapSaveData.sliders, beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords, beatmapSaveData.useNormalEventsAsCompatibleEvents);
+            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, h_obstacleDatas, beatmapSaveData.sliders, beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords, beatmapSaveData.useNormalEventsAsCompatibleEvents);
         }
 
         internal static BeatmapSaveData Mirror_Vertical(BeatmapSaveData beatmapSaveData, bool flip_rows, bool remove_walls, bool is_ME)
@@ -92,7 +101,7 @@ namespace Chirality
 
         private static BeatmapSaveData.ColorNoteData Mirror_Horizontal_Note(BeatmapSaveData.ColorNoteData colorNoteData, int numberOfLines, bool flip_lines, bool is_ME)
         {
-            int h_lineIndex;
+            int h_line;
 
             BeatmapSaveData.NoteColorType color;
             if (colorNoteData.color == BeatmapSaveData.NoteColorType.ColorA)
@@ -113,7 +122,7 @@ namespace Chirality
 
             if (colorNoteData.line >= 1000 || colorNoteData.line <= -1000)
             {
-                h_lineIndex = colorNoteData.line / 1000 - 1; // Definition from ME
+                h_line = colorNoteData.line / 1000 - 1; // Definition from ME
             }
 
             // Keep This Note: This isn't a robust way to check for extended maps
@@ -126,11 +135,11 @@ namespace Chirality
             // Maps with extended non-precision-placement indexes are handled properly by numberOfLines
             else if (flip_lines)
             {
-                h_lineIndex = numberOfLines - 1 - colorNoteData.line;
+                h_line = numberOfLines - 1 - colorNoteData.line;
             }
             else
             {
-                h_lineIndex = colorNoteData.line;
+                h_line = colorNoteData.line;
                 color = colorNoteData.color;
             }
 
@@ -144,21 +153,19 @@ namespace Chirality
             int h_angleOffset = colorNoteData.angleOffset;
 
 
-            return new BeatmapSaveData.ColorNoteData(colorNoteData.beat, h_lineIndex, Check_Layer(colorNoteData.layer), color, h_cutDirection, h_angleOffset);
+            return new BeatmapSaveData.ColorNoteData(colorNoteData.beat, h_line, Check_Layer(colorNoteData.layer), color, h_cutDirection, h_angleOffset);
         }
 
 
-        /*private static ObstacleData Mirror_Horizontal_Obstacle(ObstacleData obstacleData, int numberOfLines, bool flip_lines)
+        private static BeatmapSaveData.ObstacleData Mirror_Horizontal_Obstacle(BeatmapSaveData.ObstacleData obstacleData, int numberOfLines, bool flip_lines)
         {
-            ObstacleData h_obstacleData;
-            if (flip_lines && obstacleData.obstacleType == ObstacleType.FullHeight)
+            if (flip_lines)
             {
-                h_obstacleData = new ObstacleData(obstacleData.time, numberOfLines - obstacleData.width - obstacleData.lineIndex, ObstacleType.FullHeight, obstacleData.duration, obstacleData.width);
-                return h_obstacleData;
+                return new BeatmapSaveData.ObstacleData(obstacleData.beat, numberOfLines - obstacleData.width - obstacleData.line, obstacleData.layer, obstacleData.duration, obstacleData.width, obstacleData.height);
             }
 
             return obstacleData;
-        }*/
+        }
         #endregion
 
 

@@ -140,7 +140,7 @@ namespace Chirality
                 // Commission
                 //case 2: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Inverse(i.beatmapData.GetCopy(), true, false, is_ME_or_NE, is_ME));
                 // Community release
-                //case 3: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Horizontal(i.beatmapData.GetCopy(), false, is_ME_or_NE, is_ME));
+                case 3: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Horizontal(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
                 // Community release (sky)
                 //case 4: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, MirrorTransforms.Mirror_Inverse(i.beatmapData.GetCopy(), true, true, is_ME_or_NE, is_ME));
                 // Maybe
