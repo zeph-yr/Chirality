@@ -12,7 +12,7 @@ namespace Chirality
     internal class StandardLevelDetailViewPatch
     {
 
-        static void Prefix(IBeatmapLevel level)
+        static async void Prefix(IBeatmapLevel level)
         {
             Plugin.Log.Debug("SetContent");
 
@@ -51,6 +51,8 @@ namespace Chirality
                 return;
             }
 
+            Plugin.Log.Debug("Index: " + index);
+
             MirrorTransforms.rand = new System.Random(99);
 
             // Commission
@@ -66,24 +68,24 @@ namespace Chirality
 
             // Community Release
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.horizontal.png", "Horizontal", "Invert Left-Right"));
-            CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.vertical.png", "Vertical", "Invert Up-Down"));
-            CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse", "Inverse"));
+            //CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.vertical.png", "Vertical", "Invert Up-Down"));
+            //CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse", "Inverse"));
 
-            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select(i => Create_DifficultyAsync(i, h_beatmapset, 3)).ToArray();
-            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Create_DifficultyAsync(i, v_beatmapset, 1)).ToArray();
-            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Create_DifficultyAsync(i, i_beatmapset, 4)).ToArray();
+            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, h_beatmapset, 3);
+            //CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Create_Difficulty_Async(i, v_beatmapset, 1)).ToArray();
+            //CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Create_Difficulty_Async(i, i_beatmapset, 4)).ToArray();
 
             h_beatmapset.SetCustomDifficultyBeatmaps(h_customDifficultyBeatmaps);
-            v_beatmapset.SetCustomDifficultyBeatmaps(v_customDifficultyBeatmaps);
-            i_beatmapset.SetCustomDifficultyBeatmaps(i_customDifficultyBeatmaps);
+            //v_beatmapset.SetCustomDifficultyBeatmaps(v_customDifficultyBeatmaps);
+            //i_beatmapset.SetCustomDifficultyBeatmaps(i_customDifficultyBeatmaps);
 
             //level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps[0].GetBeatmapDataBasicInfoAsync().Result.numberOfLines
 
             List<IDifficultyBeatmapSet> custom_difficultyBeatmapSets = new List<IDifficultyBeatmapSet>(level.beatmapLevelData.difficultyBeatmapSets)
             {
                 h_beatmapset,
-                v_beatmapset,
-                i_beatmapset
+                //v_beatmapset,
+                //i_beatmapset
             };
 
             if (level.beatmapLevelData is BeatmapLevelData beatmapLevelData)
@@ -92,8 +94,19 @@ namespace Chirality
             }
         }
 
+        internal static async Task<CustomDifficultyBeatmap[]> Create_Difficulty_Array_Async(IReadOnlyList<IDifficultyBeatmap> difficultyBeatmaps, CustomDifficultyBeatmapSet beatmapSet, int mode)
+        {
+            CustomDifficultyBeatmap[] customDifficultyBeatmaps = new CustomDifficultyBeatmap[difficultyBeatmaps.Count];
+            for (int i = 0; i < difficultyBeatmaps.Count; i++)
+            {
+                customDifficultyBeatmaps[i] = await Create_Difficulty_Async(difficultyBeatmaps[i], beatmapSet, mode);
+            }
 
-        internal static async Task<CustomDifficultyBeatmap> Create_DifficultyAsync(IDifficultyBeatmap i, CustomDifficultyBeatmapSet beatmapset, int mode)
+            return customDifficultyBeatmaps;
+        }
+
+
+        internal static async Task<CustomDifficultyBeatmap> Create_Difficulty_Async(IDifficultyBeatmap i, CustomDifficultyBeatmapSet beatmapset, int mode)
         {
             bool is_ME = false; // Chaos generator
             bool is_ME_or_NE = false; // Yeets walls
