@@ -57,14 +57,22 @@ namespace Chirality
                 h_sliderDatas.Add(Mirror_Horizontal_Slider(sliderData, numberOfLines, flip_lines, is_ME));
             }
 
-
+            // BurstSliders:
+            List<BeatmapSaveData.BurstSliderData> h_burstSliderDatas = new List<BeatmapSaveData.BurstSliderData>();
+            foreach (BeatmapSaveData.BurstSliderData burstSliderData in beatmapSaveData.burstSliders)
+            {
+                h_burstSliderDatas.Add(Mirror_Horizontal_BurstSlider(burstSliderData, numberOfLines, flip_lines, is_ME));
+            }
 
 
             return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, h_obstacleDatas, h_sliderDatas, 
-                                       beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, 
+                                       h_burstSliderDatas, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, 
                                        beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords, 
                                        beatmapSaveData.useNormalEventsAsCompatibleEvents);
         }
+
+
+
 
         internal static BeatmapSaveData Mirror_Vertical(BeatmapSaveData beatmapSaveData, bool flip_rows, bool remove_walls, bool is_ME)
         {
@@ -286,6 +294,71 @@ namespace Chirality
                                                   sliderData.tailBeat, h_tailline, Check_Layer(sliderData.tailLayer), sliderData.tailControlPointLengthMultiplier, h_tailcutDirection, sliderData.sliderMidAnchorMode);
         }
 
+
+        private static BeatmapSaveData.BurstSliderData Mirror_Horizontal_BurstSlider(BeatmapSaveData.BurstSliderData burstSliderData, int numberOfLines, bool flip_lines, bool is_ME)
+        {
+            int h_headline;
+            int h_tailline;
+
+            BeatmapSaveData.NoteColorType color;
+            if (burstSliderData.colorType == BeatmapSaveData.NoteColorType.ColorA)
+            {
+                color = BeatmapSaveData.NoteColorType.ColorB;
+            }
+            else
+            {
+                color = BeatmapSaveData.NoteColorType.ColorA;
+            }
+            //There was a bug where all the ME maps have the colors flipped oops check it again
+
+
+            // Precision maps will not have indexes flipped (complicated math) but their colors will
+            // Yes, it will be weird like streams will zigzag in the wrong direction...hence introducing chaos mode. Might as well make use of the weirdness!
+            // Other option is to just not support ME and NE maps
+            // Also Note: Not worth reusing check function because non-extended map block will become unnecessarily complicated
+
+            if (burstSliderData.headLine >= 1000 || burstSliderData.headLine <= -1000)
+            {
+                h_headline = burstSliderData.headLine / 1000 - 1; // Definition from ME
+                color = burstSliderData.colorType; // Actually fixed the color swap here for BS 1.20.0
+            }
+            else if (flip_lines)
+            {
+                h_headline = numberOfLines - 1 - burstSliderData.headLine;
+            }
+            else
+            {
+                h_headline = burstSliderData.headLine;
+                color = burstSliderData.colorType;
+            }
+
+            if (burstSliderData.tailLine >= 1000 || burstSliderData.tailLine <= -1000)
+            {
+                h_tailline = burstSliderData.tailLine / 1000 - 1; // Definition from ME
+                color = burstSliderData.colorType; // Actually fixed the color swap here for BS 1.20.0
+            }
+
+            // Only non-precision-placement maps can have the option to be index flipped
+            // Maps with extended non-precision-placement indexes are handled properly by numberOfLines
+            else if (flip_lines)
+            {
+                h_tailline = numberOfLines - 1 - burstSliderData.tailLine;
+            }
+            else
+            {
+                h_tailline = burstSliderData.tailLine;
+                color = burstSliderData.colorType;
+            }
+
+            NoteCutDirection h_headcutDirection; // Yes, this is support for precision placement and ME LOL
+            if (horizontal_cut_transform.TryGetValue(burstSliderData.headCutDirection, out h_headcutDirection) == false || is_ME)
+            {
+                h_headcutDirection = Get_Random_Direction();
+            }
+
+            return new BeatmapSaveData.BurstSliderData(color, burstSliderData.beat, h_headline, Check_Layer(burstSliderData.headLayer), h_headcutDirection,
+                                                  burstSliderData.tailBeat, h_tailline, Check_Layer(burstSliderData.tailLayer), burstSliderData.sliceCount, burstSliderData.squishAmount);
+        }
         #endregion
 
 
