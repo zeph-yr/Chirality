@@ -50,20 +50,57 @@ namespace Chirality
                 }
             }
 
-            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, h_obstacleDatas, beatmapSaveData.sliders, beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords, beatmapSaveData.useNormalEventsAsCompatibleEvents);
+            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, h_obstacleDatas, beatmapSaveData.sliders, 
+                                       beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, 
+                                       beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords, 
+                                       beatmapSaveData.useNormalEventsAsCompatibleEvents);
         }
 
         internal static BeatmapSaveData Mirror_Vertical(BeatmapSaveData beatmapSaveData, bool flip_rows, bool remove_walls, bool is_ME)
         {
+            // Bombs:
+            List<BeatmapSaveData.BombNoteData> v_bombNotes = new List<BeatmapSaveData.BombNoteData>();
+            foreach (BeatmapSaveData.BombNoteData bombNoteData in beatmapSaveData.bombNotes)
+            {
+                if (flip_rows)
+                {
+                    v_bombNotes.Add(new BeatmapSaveData.BombNoteData(bombNoteData.beat, bombNoteData.line, 3 - 1 - bombNoteData.layer));
+                }
+                else
+                {
+                    v_bombNotes.Add(bombNoteData);
+                }
+            }
 
-            return beatmapSaveData;
+            // ColorNotes:
+            List<BeatmapSaveData.ColorNoteData> v_colorNotes = new List<BeatmapSaveData.ColorNoteData>();
+            foreach (BeatmapSaveData.ColorNoteData colorNote in beatmapSaveData.colorNotes)
+            {
+                v_colorNotes.Add(Mirror_Vertical_Note(colorNote, flip_rows, is_ME));
+            }
+
+            // Obstacles:
+            List<BeatmapSaveData.ObstacleData> v_obstacleDatas = new List<BeatmapSaveData.ObstacleData>();
+            if (remove_walls == false)
+            {
+                foreach (BeatmapSaveData.ObstacleData obstacleData in beatmapSaveData.obstacles)
+                {
+                    v_obstacleDatas.Add(Mirror_Vertical_Obstacle(obstacleData, flip_rows));
+                }
+            }
+
+            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, v_colorNotes, v_bombNotes, v_obstacleDatas, beatmapSaveData.sliders,
+                                       beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents,
+                                       beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords,
+                                       beatmapSaveData.useNormalEventsAsCompatibleEvents);
         }
 
-        /*internal static BeatmapSaveData Mirror_Inverse(BeatmapSaveData beatmapSaveData, bool flip_lines, bool flip_rows, bool remove_walls, bool is_ME)
+        internal static BeatmapSaveData Mirror_Inverse(BeatmapSaveData beatmapSaveData, int numberOfLines, bool flip_lines, bool flip_rows, bool remove_walls, bool is_ME)
         {
             //Plugin.Log.Debug("Mirror Inverse");
-            return Mirror_Vertical(Mirror_Horizontal(beatmapSaveData, flip_lines, remove_walls, is_ME), flip_rows, remove_walls, is_ME);
-        }*/
+            
+            return Mirror_Vertical(Mirror_Horizontal(beatmapSaveData, numberOfLines, flip_lines, remove_walls, is_ME), flip_rows, remove_walls, is_ME);
+        }
 
 
 
@@ -193,15 +230,15 @@ namespace Chirality
         }
 
 
-        private static NoteData Mirror_Vertical_Note(NoteData noteData, bool flip_rows, bool has_ME)
+        private static BeatmapSaveData.ColorNoteData Mirror_Vertical_Note(BeatmapSaveData.ColorNoteData colorNoteData, bool flip_rows, bool has_ME)
         {
-            NoteLineLayer v_noteLineLayer;
+            int v_noteLineLayer;
 
             // All precision placements will not be layer-flipped (complicated math)
             // This could be weird, consider it part of chaos mode KEK
-            if ((int)noteData.noteLineLayer >= 1000 || (int)noteData.noteLineLayer <= -1000)
+            if (colorNoteData.layer >= 1000 || colorNoteData.layer <= -1000)
             {
-                v_noteLineLayer = (NoteLineLayer)((int)noteData.noteLineLayer / 1000) - 1; // Definition from ME
+                v_noteLineLayer = (colorNoteData.layer / 1000) - 1; // Definition from ME
             }
 
             // Keep This Note: This is not a robust way to check for extended maps (see above)
@@ -214,34 +251,32 @@ namespace Chirality
             // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
             else if (flip_rows)
             {
-                v_noteLineLayer = (NoteLineLayer)(3 - 1 - (int)noteData.noteLineLayer);
+                v_noteLineLayer = 3 - 1 - colorNoteData.layer;
             }
             else
             {
-                v_noteLineLayer = noteData.noteLineLayer;
+                v_noteLineLayer = colorNoteData.layer;
             }
 
             NoteCutDirection v_cutDirection;
-            if (vertical_cut_transform.TryGetValue(noteData.cutDirection, out v_cutDirection) == false || has_ME)
+            if (vertical_cut_transform.TryGetValue(colorNoteData.cutDirection, out v_cutDirection) == false || has_ME)
             {
                 v_cutDirection = Get_Random_Direction();
             }
 
-            NoteData v_noteData = NoteData.CreateBasicNoteData(noteData.time, Check_Index(noteData.lineIndex), v_noteLineLayer, noteData.colorType, v_cutDirection);
-
-            return v_noteData;
+            return new BeatmapSaveData.ColorNoteData(colorNoteData.beat, Check_Index(colorNoteData.line), v_noteLineLayer, colorNoteData.color, v_cutDirection, colorNoteData.angleOffset);
         }
 
 
-        /*private static ObstacleData Mirror_Vertical_Obstacle(ObstacleData obstacleData, bool flip_rows)
+        private static BeatmapSaveData.ObstacleData Mirror_Vertical_Obstacle(BeatmapSaveData.ObstacleData obstacleData, bool flip_rows)
         {
-            if (flip_rows && obstacleData.obstacleType == ObstacleType.Top)
+            if (flip_rows)
             {
-                obstacleData.MoveTime(-1); // To keep the number of walls the same
+                return new BeatmapSaveData.ObstacleData(obstacleData.beat, 0, 0, 0, 0, 0);
             }
 
             return obstacleData;
-        }*/
+        }
         #endregion
 
 
