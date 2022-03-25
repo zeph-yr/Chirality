@@ -50,7 +50,17 @@ namespace Chirality
                 }
             }
 
-            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, h_obstacleDatas, beatmapSaveData.sliders, 
+            // Sliders:
+            List<BeatmapSaveData.SliderData> h_sliderDatas = new List<BeatmapSaveData.SliderData>();
+            foreach (BeatmapSaveData.SliderData sliderData in beatmapSaveData.sliders)
+            {
+                h_sliderDatas.Add(Mirror_Horizontal_Slider(sliderData, numberOfLines, flip_lines, is_ME));
+            }
+
+
+
+
+            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, h_obstacleDatas, h_sliderDatas, 
                                        beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, 
                                        beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords, 
                                        beatmapSaveData.useNormalEventsAsCompatibleEvents);
@@ -204,6 +214,78 @@ namespace Chirality
 
             return obstacleData;
         }
+
+        private static BeatmapSaveData.SliderData Mirror_Horizontal_Slider(BeatmapSaveData.SliderData sliderData, int numberOfLines, bool flip_lines, bool is_ME)
+        {
+            int h_headline;
+            int h_tailline;
+
+            BeatmapSaveData.NoteColorType color;
+            if (sliderData.colorType == BeatmapSaveData.NoteColorType.ColorA)
+            {
+                color = BeatmapSaveData.NoteColorType.ColorB;
+            }
+            else
+            {
+                color = BeatmapSaveData.NoteColorType.ColorA;
+            }
+            //There was a bug where all the ME maps have the colors flipped oops check it again
+
+
+            // Precision maps will not have indexes flipped (complicated math) but their colors will
+            // Yes, it will be weird like streams will zigzag in the wrong direction...hence introducing chaos mode. Might as well make use of the weirdness!
+            // Other option is to just not support ME and NE maps
+            // Also Note: Not worth reusing check function because non-extended map block will become unnecessarily complicated
+
+            if (sliderData.headLine >= 1000 || sliderData.headLine <= -1000)
+            {
+                h_headline = sliderData.headLine / 1000 - 1; // Definition from ME
+                color = sliderData.colorType; // Actually fixed the color swap here for BS 1.20.0
+            }
+            else if (flip_lines)
+            {
+                h_headline = numberOfLines - 1 - sliderData.headLine;
+            }
+            else
+            {
+                h_headline = sliderData.headLine;
+                color = sliderData.colorType;
+            }
+
+            if (sliderData.tailLine >= 1000 || sliderData.tailLine <= -1000)
+            {
+                h_tailline = sliderData.tailLine / 1000 - 1; // Definition from ME
+                color = sliderData.colorType; // Actually fixed the color swap here for BS 1.20.0
+            }
+
+            // Only non-precision-placement maps can have the option to be index flipped
+            // Maps with extended non-precision-placement indexes are handled properly by numberOfLines
+            else if (flip_lines)
+            {
+                h_tailline = numberOfLines - 1 - sliderData.tailLine;
+            }
+            else
+            {
+                h_tailline = sliderData.tailLine;
+                color = sliderData.colorType;
+            }
+
+            NoteCutDirection h_headcutDirection; // Yes, this is support for precision placement and ME LOL
+            if (horizontal_cut_transform.TryGetValue(sliderData.headCutDirection, out h_headcutDirection) == false || is_ME)
+            {
+                h_headcutDirection = Get_Random_Direction();
+            }
+
+            NoteCutDirection h_tailcutDirection; // Yes, this is support for precision placement and ME LOL
+            if (horizontal_cut_transform.TryGetValue(sliderData.tailCutDirection, out h_tailcutDirection) == false || is_ME)
+            {
+                h_headcutDirection = Get_Random_Direction();
+            }
+
+            return new BeatmapSaveData.SliderData(color, sliderData.beat, h_headline, Check_Layer(sliderData.headLayer), sliderData.headControlPointLengthMultiplier, h_headcutDirection,
+                                                  sliderData.tailBeat, h_tailline, Check_Layer(sliderData.tailLayer), sliderData.tailControlPointLengthMultiplier, h_tailcutDirection, sliderData.sliderMidAnchorMode);
+        }
+
         #endregion
 
 
