@@ -160,6 +160,7 @@ namespace Chirality
             if (colorNoteData.line >= 1000 || colorNoteData.line <= -1000)
             {
                 h_line = colorNoteData.line / 1000 - 1; // Definition from ME
+                color = colorNoteData.color; // Actually fixed the color swap here for BS 1.20.0
             }
 
             // Keep This Note: This isn't a robust way to check for extended maps
