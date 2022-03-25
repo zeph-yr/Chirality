@@ -72,8 +72,6 @@ namespace Chirality
         }
 
 
-
-
         internal static BeatmapSaveData Mirror_Vertical(BeatmapSaveData beatmapSaveData, bool flip_rows, bool remove_walls, bool is_ME)
         {
             // Bombs:
@@ -107,8 +105,23 @@ namespace Chirality
                 }
             }
 
-            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, v_colorNotes, v_bombNotes, v_obstacleDatas, beatmapSaveData.sliders,
-                                       beatmapSaveData.burstSliders, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents,
+            // Sliders:
+            List<BeatmapSaveData.SliderData> v_sliderDatas = new List<BeatmapSaveData.SliderData>();
+            foreach (BeatmapSaveData.SliderData sliderData in beatmapSaveData.sliders)
+            {
+                v_sliderDatas.Add(Mirror_Vertical_Slider(sliderData, flip_rows, is_ME));
+            }
+
+            // BurstSliders:
+            List<BeatmapSaveData.BurstSliderData> v_burstSliderDatas = new List<BeatmapSaveData.BurstSliderData>();
+            foreach (BeatmapSaveData.BurstSliderData burstSliderData in beatmapSaveData.burstSliders)
+            {
+                v_burstSliderDatas.Add(Mirror_Vertical_BurstSlider(burstSliderData, flip_rows, is_ME));
+            }
+
+
+            return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, v_colorNotes, v_bombNotes, v_obstacleDatas, v_sliderDatas,
+                                       v_burstSliderDatas, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents,
                                        beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords,
                                        beatmapSaveData.useNormalEventsAsCompatibleEvents);
         }
@@ -433,6 +446,123 @@ namespace Chirality
 
             return obstacleData;
         }
+
+        private static BeatmapSaveData.SliderData Mirror_Vertical_Slider(BeatmapSaveData.SliderData sliderData, bool flip_rows, bool has_ME)
+        {
+            int v_head_noteLineLayer;
+            int v_tail_noteLineLayer;
+
+            // All precision placements will not be layer-flipped (complicated math)
+            // This could be weird, consider it part of chaos mode KEK
+            if (sliderData.headLayer >= 1000 || sliderData.headLayer<= -1000)
+            {
+                v_head_noteLineLayer = (sliderData.headLayer / 1000) - 1; // Definition from ME
+            }
+
+            // Keep This Note: This is not a robust way to check for extended maps (see above)
+            /*if ((int)noteData.noteLineLayer > 2)
+            {
+                v_noteLineLayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
+            }*/
+
+            // Only non-precision-placement maps can have the option to be layer flipped
+            // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
+            else if (flip_rows)
+            {
+                v_head_noteLineLayer = 3 - 1 - sliderData.headLayer;
+            }
+            else
+            {
+                v_head_noteLineLayer = sliderData.headLayer;
+            }
+
+
+            if (sliderData.tailLayer >= 1000 || sliderData.tailLayer <= -1000)
+            {
+                v_tail_noteLineLayer = (sliderData.tailLayer / 1000) - 1; // Definition from ME
+            }
+            else if (flip_rows)
+            {
+                v_tail_noteLineLayer = 3 - 1 - sliderData.tailLayer;
+            }
+            else
+            {
+                v_tail_noteLineLayer = sliderData.tailLayer;
+            }
+
+
+            NoteCutDirection v_headcutDirection;
+            if (vertical_cut_transform.TryGetValue(sliderData.headCutDirection, out v_headcutDirection) == false || has_ME)
+            {
+                v_headcutDirection = Get_Random_Direction();
+            }
+
+            NoteCutDirection v_tailcutDirection;
+            if (vertical_cut_transform.TryGetValue(sliderData.tailCutDirection, out v_tailcutDirection) == false || has_ME)
+            {
+                v_tailcutDirection = Get_Random_Direction();
+            }
+
+
+            return new BeatmapSaveData.SliderData(sliderData.colorType, sliderData.beat, Check_Index(sliderData.headLine), v_head_noteLineLayer, sliderData.headControlPointLengthMultiplier, v_headcutDirection,
+                                                              sliderData.tailBeat, Check_Index(sliderData.tailLine), v_tail_noteLineLayer, sliderData.tailControlPointLengthMultiplier, v_tailcutDirection, sliderData.sliderMidAnchorMode);
+        }
+
+
+        private static BeatmapSaveData.BurstSliderData Mirror_Vertical_BurstSlider(BeatmapSaveData.BurstSliderData burstSliderData, bool flip_rows, bool has_ME)
+        {
+            int v_head_noteLineLayer;
+            int v_tail_noteLineLayer;
+
+            // All precision placements will not be layer-flipped (complicated math)
+            // This could be weird, consider it part of chaos mode KEK
+            if (burstSliderData.headLayer >= 1000 || burstSliderData.headLayer <= -1000)
+            {
+                v_head_noteLineLayer = (burstSliderData.headLayer / 1000) - 1; // Definition from ME
+            }
+
+            // Keep This Note: This is not a robust way to check for extended maps (see above)
+            /*if ((int)noteData.noteLineLayer > 2)
+            {
+                v_noteLineLayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
+            }*/
+
+            // Only non-precision-placement maps can have the option to be layer flipped
+            // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
+            else if (flip_rows)
+            {
+                v_head_noteLineLayer = 3 - 1 - burstSliderData.headLayer;
+            }
+            else
+            {
+                v_head_noteLineLayer = burstSliderData.headLayer;
+            }
+
+
+            if (burstSliderData.tailLayer >= 1000 || burstSliderData.tailLayer <= -1000)
+            {
+                v_tail_noteLineLayer = (burstSliderData.tailLayer / 1000) - 1; // Definition from ME
+            }
+            else if (flip_rows)
+            {
+                v_tail_noteLineLayer = 3 - 1 - burstSliderData.tailLayer;
+            }
+            else
+            {
+                v_tail_noteLineLayer = burstSliderData.tailLayer;
+            }
+
+
+            NoteCutDirection v_headcutDirection;
+            if (vertical_cut_transform.TryGetValue(burstSliderData.headCutDirection, out v_headcutDirection) == false || has_ME)
+            {
+                v_headcutDirection = Get_Random_Direction();
+            }
+
+            return new BeatmapSaveData.BurstSliderData(burstSliderData.colorType, burstSliderData.beat, Check_Index(burstSliderData.headLine), v_head_noteLineLayer, v_headcutDirection,
+                                                              burstSliderData.tailBeat, Check_Index(burstSliderData.tailLine), v_tail_noteLineLayer, burstSliderData.sliceCount, burstSliderData.squishAmount);
+        }
+
         #endregion
 
 

@@ -70,14 +70,19 @@ namespace Chirality
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.horizontal.png", "Horizontal", "Invert Left-Right"));
             CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.vertical.png", "Vertical", "Invert Up-Down"));
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse", "Inverse"));
+            CustomDifficultyBeatmapSet i_beatmapset_2 = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse_2", "Inverse_2"));
+
 
             CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, h_beatmapset, 3);
             CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, v_beatmapset, 1);
             CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, i_beatmapset, 4);
+            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps_2 = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, i_beatmapset_2, 5);
 
             h_beatmapset.SetCustomDifficultyBeatmaps(h_customDifficultyBeatmaps);
             v_beatmapset.SetCustomDifficultyBeatmaps(v_customDifficultyBeatmaps);
             i_beatmapset.SetCustomDifficultyBeatmaps(i_customDifficultyBeatmaps);
+            i_beatmapset_2.SetCustomDifficultyBeatmaps(i_customDifficultyBeatmaps_2);
+
 
             //level.beatmapLevelData.difficultyBeatmapSets[0].difficultyBeatmaps[0].GetBeatmapDataBasicInfoAsync().Result.numberOfLines
 
@@ -85,7 +90,9 @@ namespace Chirality
             {
                 h_beatmapset,
                 v_beatmapset,
-                i_beatmapset
+                i_beatmapset,
+                i_beatmapset_2
+
             };
 
             if (level.beatmapLevelData is BeatmapLevelData beatmapLevelData)
@@ -144,7 +151,7 @@ namespace Chirality
                 // Community release (sky)
                 case 4: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, true, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
                 // Maybe
-                //case 5: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
+                case 5: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
 
                 default: return (CustomDifficultyBeatmap)i;
             }
