@@ -145,5 +145,8 @@
     <EmbeddedResource Include="Icons\inverse.png" />
     <EmbeddedResource Include="Icons\vertical.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\inverted.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
