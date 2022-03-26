@@ -371,13 +371,13 @@ namespace Chirality
 
         private static BeatmapSaveData.ColorNoteData Mirror_Vertical_Note(BeatmapSaveData.ColorNoteData colorNoteData, bool flip_rows, bool has_ME)
         {
-            int v_noteLineLayer;
+            int v_layer;
 
             // All precision placements will not be layer-flipped (complicated math)
             // This could be weird, consider it part of chaos mode KEK
             if (colorNoteData.layer >= 1000 || colorNoteData.layer <= -1000)
             {
-                v_noteLineLayer = (colorNoteData.layer / 1000) - 1; // Definition from ME
+                v_layer = (colorNoteData.layer / 1000) - 1; // Definition from ME
             }
 
             // Keep This Note: This is not a robust way to check for extended maps (see above)
@@ -390,11 +390,11 @@ namespace Chirality
             // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
             else if (flip_rows)
             {
-                v_noteLineLayer = 3 - 1 - colorNoteData.layer;
+                v_layer = 3 - 1 - colorNoteData.layer;
             }
             else
             {
-                v_noteLineLayer = colorNoteData.layer;
+                v_layer = colorNoteData.layer;
             }
 
             NoteCutDirection v_cutDirection;
@@ -403,7 +403,7 @@ namespace Chirality
                 v_cutDirection = Get_Random_Direction();
             }
 
-            return new BeatmapSaveData.ColorNoteData(colorNoteData.beat, Check_Index(colorNoteData.line), v_noteLineLayer, colorNoteData.color, v_cutDirection, colorNoteData.angleOffset);
+            return new BeatmapSaveData.ColorNoteData(colorNoteData.beat, Check_Index(colorNoteData.line), v_layer, colorNoteData.color, v_cutDirection, colorNoteData.angleOffset);
         }
 
 
@@ -419,34 +419,34 @@ namespace Chirality
 
         private static BeatmapSaveData.SliderData Mirror_Vertical_Slider(BeatmapSaveData.SliderData sliderData, bool flip_rows, bool has_ME)
         {
-            int v_head_noteLineLayer;
-            int v_tail_noteLineLayer;
+            int v_headlayer;
+            int v_taillayer;
 
             if (sliderData.headLayer >= 1000 || sliderData.headLayer<= -1000)
             {
-                v_head_noteLineLayer = (sliderData.headLayer / 1000) - 1; // Definition from ME
+                v_headlayer = (sliderData.headLayer / 1000) - 1; // Definition from ME
             }
             else if (flip_rows)
             {
-                v_head_noteLineLayer = 3 - 1 - sliderData.headLayer;
+                v_headlayer = 3 - 1 - sliderData.headLayer;
             }
             else
             {
-                v_head_noteLineLayer = sliderData.headLayer;
+                v_headlayer = sliderData.headLayer;
             }
 
 
             if (sliderData.tailLayer >= 1000 || sliderData.tailLayer <= -1000)
             {
-                v_tail_noteLineLayer = (sliderData.tailLayer / 1000) - 1; // Definition from ME
+                v_taillayer = (sliderData.tailLayer / 1000) - 1; // Definition from ME
             }
             else if (flip_rows)
             {
-                v_tail_noteLineLayer = 3 - 1 - sliderData.tailLayer;
+                v_taillayer = 3 - 1 - sliderData.tailLayer;
             }
             else
             {
-                v_tail_noteLineLayer = sliderData.tailLayer;
+                v_taillayer = sliderData.tailLayer;
             }
 
 
@@ -463,41 +463,41 @@ namespace Chirality
             }
 
 
-            return new BeatmapSaveData.SliderData(sliderData.colorType, sliderData.beat, Check_Index(sliderData.headLine), v_head_noteLineLayer, sliderData.headControlPointLengthMultiplier, v_headcutDirection,
-                                                              sliderData.tailBeat, Check_Index(sliderData.tailLine), v_tail_noteLineLayer, sliderData.tailControlPointLengthMultiplier, v_tailcutDirection, sliderData.sliderMidAnchorMode);
+            return new BeatmapSaveData.SliderData(sliderData.colorType, sliderData.beat, Check_Index(sliderData.headLine), v_headlayer, sliderData.headControlPointLengthMultiplier, v_headcutDirection,
+                                                              sliderData.tailBeat, Check_Index(sliderData.tailLine), v_taillayer, sliderData.tailControlPointLengthMultiplier, v_tailcutDirection, sliderData.sliderMidAnchorMode);
         }
 
 
         private static BeatmapSaveData.BurstSliderData Mirror_Vertical_BurstSlider(BeatmapSaveData.BurstSliderData burstSliderData, bool flip_rows, bool has_ME)
         {
-            int v_head_noteLineLayer;
-            int v_tail_noteLineLayer;
+            int v_headlayer;
+            int v_taillayer;
 
             if (burstSliderData.headLayer >= 1000 || burstSliderData.headLayer <= -1000)
             {
-                v_head_noteLineLayer = (burstSliderData.headLayer / 1000) - 1; // Definition from ME
+                v_headlayer = (burstSliderData.headLayer / 1000) - 1; // Definition from ME
             }
             else if (flip_rows)
             {
-                v_head_noteLineLayer = 3 - 1 - burstSliderData.headLayer;
+                v_headlayer = 3 - 1 - burstSliderData.headLayer;
             }
             else
             {
-                v_head_noteLineLayer = burstSliderData.headLayer;
+                v_headlayer = burstSliderData.headLayer;
             }
 
 
             if (burstSliderData.tailLayer >= 1000 || burstSliderData.tailLayer <= -1000)
             {
-                v_tail_noteLineLayer = (burstSliderData.tailLayer / 1000) - 1; // Definition from ME
+                v_taillayer = (burstSliderData.tailLayer / 1000) - 1; // Definition from ME
             }
             else if (flip_rows)
             {
-                v_tail_noteLineLayer = 3 - 1 - burstSliderData.tailLayer;
+                v_taillayer = 3 - 1 - burstSliderData.tailLayer;
             }
             else
             {
-                v_tail_noteLineLayer = burstSliderData.tailLayer;
+                v_taillayer = burstSliderData.tailLayer;
             }
 
 
@@ -507,8 +507,8 @@ namespace Chirality
                 v_headcutDirection = Get_Random_Direction();
             }
 
-            return new BeatmapSaveData.BurstSliderData(burstSliderData.colorType, burstSliderData.beat, Check_Index(burstSliderData.headLine), v_head_noteLineLayer, v_headcutDirection,
-                                                              burstSliderData.tailBeat, Check_Index(burstSliderData.tailLine), v_tail_noteLineLayer, burstSliderData.sliceCount, burstSliderData.squishAmount);
+            return new BeatmapSaveData.BurstSliderData(burstSliderData.colorType, burstSliderData.beat, Check_Index(burstSliderData.headLine), v_headlayer, v_headcutDirection,
+                                                              burstSliderData.tailBeat, Check_Index(burstSliderData.tailLine), v_taillayer, burstSliderData.sliceCount, burstSliderData.squishAmount);
         }
 
 
