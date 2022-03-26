@@ -107,6 +107,7 @@ namespace Chirality
             foreach (BeatmapSaveData.SliderData sliderData in beatmapSaveData.sliders)
             {
                 v_sliderDatas.Add(Mirror_Vertical_Slider(sliderData, flip_rows, is_ME));
+                //v_sliderDatas.Add((BeatmapSaveData.SliderData)Mirror_Vertical_Slider_Generic(sliderData, flip_rows, is_ME));
             }
 
             // BurstSliders:
@@ -114,6 +115,7 @@ namespace Chirality
             foreach (BeatmapSaveData.BurstSliderData burstSliderData in beatmapSaveData.burstSliders)
             {
                 v_burstSliderDatas.Add(Mirror_Vertical_BurstSlider(burstSliderData, flip_rows, is_ME));
+                //v_burstSliderDatas.Add((BeatmapSaveData.BurstSliderData)Mirror_Vertical_Slider_Generic(burstSliderData, flip_rows, is_ME));
             }
 
 
@@ -550,6 +552,74 @@ namespace Chirality
             return new BeatmapSaveData.BurstSliderData(burstSliderData.colorType, burstSliderData.beat, Check_Index(burstSliderData.headLine), v_head_noteLineLayer, v_headcutDirection,
                                                               burstSliderData.tailBeat, Check_Index(burstSliderData.tailLine), v_tail_noteLineLayer, burstSliderData.sliceCount, burstSliderData.squishAmount);
         }
+
+
+        // Experiment with reusing this function. Not sure its actually better with casting in the main function
+        /*private static BeatmapSaveData.BaseSliderData Mirror_Vertical_Slider_Generic(BeatmapSaveData.BaseSliderData baseSliderData, bool flip_rows, bool has_ME)
+        {
+            int v_head_noteLineLayer;
+            int v_tail_noteLineLayer;
+
+            // All precision placements will not be layer-flipped (complicated math)
+            // This could be weird, consider it part of chaos mode KEK
+            if (baseSliderData.headLayer >= 1000 || baseSliderData.headLayer <= -1000)
+            {
+                v_head_noteLineLayer = (baseSliderData.headLayer / 1000) - 1; // Definition from ME
+            }
+
+            // Only non-precision-placement maps can have the option to be layer flipped
+            // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
+            else if (flip_rows)
+            {
+                v_head_noteLineLayer = 3 - 1 - baseSliderData.headLayer;
+            }
+            else
+            {
+                v_head_noteLineLayer = baseSliderData.headLayer;
+            }
+
+
+            if (baseSliderData.tailLayer >= 1000 || baseSliderData.tailLayer <= -1000)
+            {
+                v_tail_noteLineLayer = (baseSliderData.tailLayer / 1000) - 1; // Definition from ME
+            }
+            else if (flip_rows)
+            {
+                v_tail_noteLineLayer = 3 - 1 - baseSliderData.tailLayer;
+            }
+            else
+            {
+                v_tail_noteLineLayer = baseSliderData.tailLayer;
+            }
+
+
+            NoteCutDirection v_headcutDirection;
+            if (vertical_cut_transform.TryGetValue(baseSliderData.headCutDirection, out v_headcutDirection) == false || has_ME)
+            {
+                v_headcutDirection = Get_Random_Direction();
+            }
+
+            BeatmapSaveData.SliderData sliderData;
+            NoteCutDirection v_tailcutDirection;
+            if ((sliderData = baseSliderData as BeatmapSaveData.SliderData) != null)
+            {
+                if (vertical_cut_transform.TryGetValue(sliderData.tailCutDirection, out v_tailcutDirection) == false || has_ME)
+                {
+                    v_tailcutDirection = Get_Random_Direction();
+                }
+
+                return new BeatmapSaveData.SliderData(baseSliderData.colorType, baseSliderData.beat, Check_Index(baseSliderData.headLine), v_head_noteLineLayer, sliderData.headControlPointLengthMultiplier, v_headcutDirection,
+                                                      baseSliderData.tailBeat, Check_Index(baseSliderData.tailLine), v_tail_noteLineLayer, sliderData.tailControlPointLengthMultiplier, v_tailcutDirection, sliderData.sliderMidAnchorMode);
+            }
+
+            else
+            {
+                BeatmapSaveData.BurstSliderData burstSliderData = (BeatmapSaveData.BurstSliderData)baseSliderData;
+
+                return new BeatmapSaveData.BurstSliderData(baseSliderData.colorType, baseSliderData.beat, Check_Index(baseSliderData.headLine), v_head_noteLineLayer, v_headcutDirection,
+                                                           baseSliderData.tailBeat, Check_Index(baseSliderData.tailLine), v_tail_noteLineLayer, burstSliderData.sliceCount, burstSliderData.squishAmount);
+            }
+        }*/
 
         #endregion
 
