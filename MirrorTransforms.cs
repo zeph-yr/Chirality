@@ -13,6 +13,7 @@ namespace Chirality
         internal static Dictionary<NoteCutDirection, NoteCutDirection> vertical_cut_transform;
 
 
+        #region "Main Transform Functions"
         internal static BeatmapSaveData Mirror_Horizontal(BeatmapSaveData beatmapSaveData, int numberOfLines, bool flip_lines, bool remove_walls, bool is_ME)
         {
             // Bombs:
@@ -122,21 +123,14 @@ namespace Chirality
                                        beatmapSaveData.useNormalEventsAsCompatibleEvents);
         }
 
+
         internal static BeatmapSaveData Mirror_Inverse(BeatmapSaveData beatmapSaveData, int numberOfLines, bool flip_lines, bool flip_rows, bool remove_walls, bool is_ME)
         {
             //Plugin.Log.Debug("Mirror Inverse");
             
             return Mirror_Vertical(Mirror_Horizontal(beatmapSaveData, numberOfLines, flip_lines, remove_walls, is_ME), flip_rows, remove_walls, is_ME);
         }
-
-
-
-        internal static NoteCutDirection Get_Random_Direction()
-        {
-            int index = rand.Next(directions.Count);
-
-            return directions[index];
-        }
+        #endregion
 
 
         #region "Horizontal Transform Functions"
@@ -246,7 +240,6 @@ namespace Chirality
             {
                 color = BeatmapSaveData.NoteColorType.ColorA;
             }
-            //There was a bug where all the ME maps have the colors flipped oops check it again
 
 
             // Precision maps will not have indexes flipped (complicated math) but their colors will
@@ -318,7 +311,6 @@ namespace Chirality
             {
                 color = BeatmapSaveData.NoteColorType.ColorA;
             }
-            //There was a bug where all the ME maps have the colors flipped oops check it again
 
 
             // Precision maps will not have indexes flipped (complicated math) but their colors will
@@ -563,6 +555,13 @@ namespace Chirality
 
 
         #region "Check Functions"
+        internal static NoteCutDirection Get_Random_Direction()
+        {
+            int index = rand.Next(directions.Count);
+
+            return directions[index];
+        }
+
         internal static int Check_Index(int lineIndex)
         {
             if (lineIndex >= 500 || lineIndex <= -500)

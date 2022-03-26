@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿// BS <=1.19.1
+using System.Collections.Generic;
 
 namespace Chirality
 {
