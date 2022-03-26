@@ -1,4 +1,5 @@
-﻿using Chirality.Configuration;
+﻿using BeatmapSaveDataVersion3;
+using Chirality.Configuration;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,24 +144,48 @@ namespace Chirality
 
             IBeatmapDataBasicInfo beatmapDataBasicInfo = await i.GetBeatmapDataBasicInfoAsync();
             int numberOfLines = beatmapDataBasicInfo.numberOfLines;
-
+            
+            BeatmapSaveData beatmapSaveData_transformed;
             switch (mode)
             {
                 // Commission
-                case 0: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Horizontal(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
-                // Shared
-                case 1: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Vertical(((CustomDifficultyBeatmap)i).beatmapSaveData, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
-                // Commission
-                case 2: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
-                // Community release
-                case 3: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Horizontal(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
-                // Community release (sky)
-                case 4: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, true, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
-                // Community release 1.20.0 Invert True
-                case 5: return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
+                case 0:
+                    //return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Horizontal(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
+                    beatmapSaveData_transformed = MirrorTransforms.Mirror_Horizontal(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, is_ME_or_NE, is_ME);
+                    break;
 
-                default: return (CustomDifficultyBeatmap)i;
+                // Shared
+                case 1:
+                    //return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Vertical(((CustomDifficultyBeatmap)i).beatmapSaveData, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
+                    beatmapSaveData_transformed = MirrorTransforms.Mirror_Vertical(((CustomDifficultyBeatmap)i).beatmapSaveData, false, is_ME_or_NE, is_ME);
+                    break;
+                // Commission
+                case 2:
+                    //return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
+                    beatmapSaveData_transformed = MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, false, is_ME_or_NE, is_ME);
+                    break;
+                // Community release
+                case 3:
+                    //return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Horizontal(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
+                    beatmapSaveData_transformed = MirrorTransforms.Mirror_Horizontal(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, is_ME_or_NE, is_ME);
+                    break;
+                // Community release (sky)
+                case 4:
+                    //return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, true, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
+                    beatmapSaveData_transformed = MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, true, true, is_ME_or_NE, is_ME);
+                    break;
+                // Community release 1.20.0 Invert True
+                case 5:
+                    //return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, false, is_ME_or_NE, is_ME), beatmapDataBasicInfo);
+                    beatmapSaveData_transformed = MirrorTransforms.Mirror_Inverse(((CustomDifficultyBeatmap)i).beatmapSaveData, numberOfLines, false, false, is_ME_or_NE, is_ME);
+                    break;
+                default:
+                    //return (CustomDifficultyBeatmap)i;
+                    beatmapSaveData_transformed = ((CustomDifficultyBeatmap)i).beatmapSaveData;
+                    break;
             }
+
+            return new CustomDifficultyBeatmap(i.level, beatmapset, i.difficulty, i.difficultyRank, i.noteJumpMovementSpeed, i.noteJumpStartBeatOffset, i.level.beatsPerMinute, beatmapSaveData_transformed, beatmapDataBasicInfo);
         }
 
 
