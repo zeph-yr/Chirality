@@ -60,16 +60,17 @@ namespace Chirality
 
             MirrorTransforms.rand = new System.Random(99);
 
-            // Commission
+
             /*
+            // Commission
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.horizontal.png", "Horizontal", "Mirror Left-Right"));
             CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.vertical.png", "Vertical", "Mirror Up-Down"));
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse", "Inverse"));
-            CustomDifficultyBeatmapSet it_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverted.png", "Inverted", "Invert True"));
+            CustomDifficultyBeatmapSet it_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverted.png", "Inverted", "Invert True")); // New for 1.20.0
 
-            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 0);
-            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 1);
-            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 2);
+            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, h_beatmapset, 0);
+            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, v_beatmapset, 1);
+            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, i_beatmapset, 2);
             CustomDifficultyBeatmap[] it_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 5);
             */
 
@@ -78,13 +79,14 @@ namespace Chirality
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.horizontal.png", "Horizontal", "Invert Left-Right"));
             CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.vertical.png", "Vertical", "Invert Up-Down"));
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse", "Inverse"));
-            CustomDifficultyBeatmapSet it_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverted.png", "Inverted", "Invert True"));
+            CustomDifficultyBeatmapSet it_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverted.png", "Inverted", "Invert True")); // New for 1.20.0
 
             // lol 4 layers of nested async stuff
             CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, h_beatmapset, 3);
             CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, v_beatmapset, 1);
             CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, i_beatmapset, 4);
             CustomDifficultyBeatmap[] it_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 5);
+
 
             h_beatmapset.SetCustomDifficultyBeatmaps(h_customDifficultyBeatmaps);
             v_beatmapset.SetCustomDifficultyBeatmaps(v_customDifficultyBeatmaps);

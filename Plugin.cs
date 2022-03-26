@@ -28,6 +28,7 @@ namespace Chirality
             Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
             Plugin.Log?.Debug("Config loaded");
 
+
             string[] icon_list = new string[] { "Chirality.Icons.horizontal.png", "Chirality.Icons.vertical.png", "Chirality.Icons.inverted.png", "Chirality.Icons.inverse.png" };
             string[] prefix_list = new string[] { "Horizontal", "Vertical", "Inverted", "Inverse" };
             string[] hint_list = new string[] { "Invert Left-Right ", "Invert Up-Down ", "True Invert ", "Inverse " };
@@ -37,7 +38,6 @@ namespace Chirality
                 for (int j = 0; j < 4; j++)
                 {
                     Sprite icon = SongCore.Utilities.Utils.LoadSpriteFromResources(icon_list[i]);
-
                     string name = prefix_list[i] + ((ModUI.PreferenceEnum)j).ToString();
                     string hint = hint_list[i] + ((ModUI.PreferenceEnum)j).ToString();
 
