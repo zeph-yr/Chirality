@@ -12,15 +12,13 @@ namespace Chirality
     [HarmonyPatch (typeof(StandardLevelDetailView), "SetContent")]
     internal class StandardLevelDetailViewPatch
     {
-
-        static async void Prefix(IBeatmapLevel level)
+        static async void Prefix(IBeatmapLevel level) // Turns out can have an async Patch!
         {
             Plugin.Log.Debug("SetContent");
 
             if (PluginConfig.Instance.enabled == false || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Mission)
             {
-                // This prevents prevents new diffs from being generated in mp but
-                // will not remove the ones generated recently while playing in solo then going into mp
+                // This prevents prevents new diffs from being generated in mp but will not remove the ones generated recently while playing in solo then going into mp
                 return;
             }
 
@@ -82,6 +80,7 @@ namespace Chirality
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse", "Inverse"));
             CustomDifficultyBeatmapSet it_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverted.png", "Inverted", "Invert True"));
 
+            // lol 4 layers of nested async stuff
             CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, h_beatmapset, 3);
             CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, v_beatmapset, 1);
             CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, i_beatmapset, 4);
@@ -125,22 +124,21 @@ namespace Chirality
             bool is_ME = false; // Chaos generator
             bool is_ME_or_NE = false; // Yeets walls
 
-            //if (i.level.levelID.StartsWith("custom_level"))
-            //{
-                if (SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Mapping Extensions"))
-                {
-                    is_ME = true;
+            // Check for OST now done uptop. Removed OST support for 1.20.0
+            if (SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Mapping Extensions"))
+            {
+                is_ME = true;
 
-                    Plugin.Log.Debug("ME map: raising hell");
-                }
+                Plugin.Log.Debug("ME map: raising hell");
+            }
 
-                if (is_ME || SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Noodle Extensions"))
-                {
-                    is_ME_or_NE = true;
+            if (is_ME || SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Noodle Extensions"))
+            {
+                is_ME_or_NE = true;
 
-                    Plugin.Log.Debug("ME-NE map: yeeting walls");
-                }
-            //}
+                Plugin.Log.Debug("ME-NE map: yeeting walls");
+            }
+
 
             IBeatmapDataBasicInfo beatmapDataBasicInfo = await i.GetBeatmapDataBasicInfoAsync();
             int numberOfLines = beatmapDataBasicInfo.numberOfLines;
@@ -170,10 +168,9 @@ namespace Chirality
 
         internal static BeatmapCharacteristicSO Create_BMCSO(string filename, string name, string hint)
         {
-            Sprite icon = SongCore.Utilities.Utils.LoadSpriteFromResources(filename);
-
             BeatmapCharacteristicSO beatmapCharacteristicSO = BeatmapCharacteristicSO.CreateInstance<BeatmapCharacteristicSO>();
 
+            Sprite icon = SongCore.Utilities.Utils.LoadSpriteFromResources(filename);
             string name_mode = name + ((ModUI.PreferenceEnum)PluginConfig.Instance.mode).ToString();
             string hint_mode = hint + " " + ((ModUI.PreferenceEnum)PluginConfig.Instance.mode).ToString();
 

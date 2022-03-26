@@ -172,8 +172,6 @@ namespace Chirality
             {
                 color = BeatmapSaveData.NoteColorType.ColorA;
             }
-            //There was a bug where all the ME maps have the colors flipped oops check it again
-
 
             // Precision maps will not have indexes flipped (complicated math) but their colors will
             // Yes, it will be weird like streams will zigzag in the wrong direction...hence introducing chaos mode. Might as well make use of the weirdness!
@@ -210,11 +208,7 @@ namespace Chirality
                 h_cutDirection = Get_Random_Direction();
             }
 
-            // Dunno what this is yet
-            int h_angleOffset = colorNoteData.angleOffset;
-
-
-            return new BeatmapSaveData.ColorNoteData(colorNoteData.beat, h_line, Check_Layer(colorNoteData.layer), color, h_cutDirection, h_angleOffset);
+            return new BeatmapSaveData.ColorNoteData(colorNoteData.beat, h_line, Check_Layer(colorNoteData.layer), color, h_cutDirection, colorNoteData.angleOffset);
         }
 
 
@@ -244,11 +238,6 @@ namespace Chirality
             }
 
 
-            // Precision maps will not have indexes flipped (complicated math) but their colors will
-            // Yes, it will be weird like streams will zigzag in the wrong direction...hence introducing chaos mode. Might as well make use of the weirdness!
-            // Other option is to just not support ME and NE maps
-            // Also Note: Not worth reusing check function because non-extended map block will become unnecessarily complicated
-
             if (sliderData.headLine >= 1000 || sliderData.headLine <= -1000)
             {
                 h_headline = sliderData.headLine / 1000 - 1; // Definition from ME
@@ -264,14 +253,12 @@ namespace Chirality
                 color = sliderData.colorType;
             }
 
+
             if (sliderData.tailLine >= 1000 || sliderData.tailLine <= -1000)
             {
                 h_tailline = sliderData.tailLine / 1000 - 1; // Definition from ME
                 color = sliderData.colorType; // Actually fixed the color swap here for BS 1.20.0
             }
-
-            // Only non-precision-placement maps can have the option to be index flipped
-            // Maps with extended non-precision-placement indexes are handled properly by numberOfLines
             else if (flip_lines)
             {
                 h_tailline = numberOfLines - 1 - sliderData.tailLine;
@@ -315,11 +302,6 @@ namespace Chirality
             }
 
 
-            // Precision maps will not have indexes flipped (complicated math) but their colors will
-            // Yes, it will be weird like streams will zigzag in the wrong direction...hence introducing chaos mode. Might as well make use of the weirdness!
-            // Other option is to just not support ME and NE maps
-            // Also Note: Not worth reusing check function because non-extended map block will become unnecessarily complicated
-
             if (burstSliderData.headLine >= 1000 || burstSliderData.headLine <= -1000)
             {
                 h_headline = burstSliderData.headLine / 1000 - 1; // Definition from ME
@@ -335,14 +317,12 @@ namespace Chirality
                 color = burstSliderData.colorType;
             }
 
+
             if (burstSliderData.tailLine >= 1000 || burstSliderData.tailLine <= -1000)
             {
                 h_tailline = burstSliderData.tailLine / 1000 - 1; // Definition from ME
                 color = burstSliderData.colorType; // Actually fixed the color swap here for BS 1.20.0
             }
-
-            // Only non-precision-placement maps can have the option to be index flipped
-            // Maps with extended non-precision-placement indexes are handled properly by numberOfLines
             else if (flip_lines)
             {
                 h_tailline = numberOfLines - 1 - burstSliderData.tailLine;
@@ -442,21 +422,10 @@ namespace Chirality
             int v_head_noteLineLayer;
             int v_tail_noteLineLayer;
 
-            // All precision placements will not be layer-flipped (complicated math)
-            // This could be weird, consider it part of chaos mode KEK
             if (sliderData.headLayer >= 1000 || sliderData.headLayer<= -1000)
             {
                 v_head_noteLineLayer = (sliderData.headLayer / 1000) - 1; // Definition from ME
             }
-
-            // Keep This Note: This is not a robust way to check for extended maps (see above)
-            /*if ((int)noteData.noteLineLayer > 2)
-            {
-                v_noteLineLayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
-            }*/
-
-            // Only non-precision-placement maps can have the option to be layer flipped
-            // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
             else if (flip_rows)
             {
                 v_head_noteLineLayer = 3 - 1 - sliderData.headLayer;
@@ -504,21 +473,10 @@ namespace Chirality
             int v_head_noteLineLayer;
             int v_tail_noteLineLayer;
 
-            // All precision placements will not be layer-flipped (complicated math)
-            // This could be weird, consider it part of chaos mode KEK
             if (burstSliderData.headLayer >= 1000 || burstSliderData.headLayer <= -1000)
             {
                 v_head_noteLineLayer = (burstSliderData.headLayer / 1000) - 1; // Definition from ME
             }
-
-            // Keep This Note: This is not a robust way to check for extended maps (see above)
-            /*if ((int)noteData.noteLineLayer > 2)
-            {
-                v_noteLineLayer = (NoteLineLayer)rand.Next(3); // ME chaos mode
-            }*/
-
-            // Only non-precision-placement maps can have the option to be layer flipped
-            // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
             else if (flip_rows)
             {
                 v_head_noteLineLayer = 3 - 1 - burstSliderData.headLayer;
@@ -560,15 +518,10 @@ namespace Chirality
             int v_head_noteLineLayer;
             int v_tail_noteLineLayer;
 
-            // All precision placements will not be layer-flipped (complicated math)
-            // This could be weird, consider it part of chaos mode KEK
             if (baseSliderData.headLayer >= 1000 || baseSliderData.headLayer <= -1000)
             {
                 v_head_noteLineLayer = (baseSliderData.headLayer / 1000) - 1; // Definition from ME
             }
-
-            // Only non-precision-placement maps can have the option to be layer flipped
-            // Maps with extended layers but non-precision-placement (eg: noteLineLayer is 5) may have odd results. Consider that part of chaos mode lol
             else if (flip_rows)
             {
                 v_head_noteLineLayer = 3 - 1 - baseSliderData.headLayer;
@@ -624,7 +577,7 @@ namespace Chirality
         #endregion
 
 
-        #region "Check Functions"
+        #region "Utility Functions"
         internal static NoteCutDirection Get_Random_Direction()
         {
             int index = rand.Next(directions.Count);

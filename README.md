@@ -16,7 +16,7 @@ Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber sub
   <b><i>Ov but it's the inverse</i></b>
 </p>
 
-## New Game Modes
+## New Game Modes / Characteristics
 - **Invert Left-Right:** Horizontal component of arrows are mirrored
 - **Invert Up-Down:** Vertical component arrows are mirrored
 - **Invert True:** Both horizontal and vertical of arrows are mirrored
