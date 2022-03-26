@@ -24,7 +24,7 @@ namespace Chirality
             }
 
             // BS 1.20.0 Not supporting OST / DLC anymore
-            if (level.levelID.Contains("custom") == false)
+            if (level.levelID.StartsWith("custom_level") == false)
             {
                 return;
             }
@@ -66,18 +66,20 @@ namespace Chirality
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.horizontal.png", "Horizontal", "Mirror Left-Right"));
             CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.vertical.png", "Vertical", "Mirror Up-Down"));
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse", "Inverse"));
+            CustomDifficultyBeatmapSet it_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverted.png", "Inverted", "Invert True"));
 
-            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select(i => Create_Difficulty(i, h_beatmapset, 0)).ToArray();
-            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Create_Difficulty(i, v_beatmapset, 1)).ToArray();
-            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps.Select((i) => Create_Difficulty(i, i_beatmapset, 2)).ToArray();
+            CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 0);
+            CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 1);
+            CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 2);
+            CustomDifficultyBeatmap[] it_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 5);
             */
+
 
             // Community Release
             CustomDifficultyBeatmapSet h_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.horizontal.png", "Horizontal", "Invert Left-Right"));
             CustomDifficultyBeatmapSet v_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.vertical.png", "Vertical", "Invert Up-Down"));
             CustomDifficultyBeatmapSet i_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverse.png", "Inverse", "Inverse"));
             CustomDifficultyBeatmapSet it_beatmapset = new CustomDifficultyBeatmapSet(Create_BMCSO("Chirality.Icons.inverted.png", "Inverted", "Invert True"));
-
 
             CustomDifficultyBeatmap[] h_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, h_beatmapset, 3);
             CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, v_beatmapset, 1);
@@ -104,6 +106,7 @@ namespace Chirality
             }
         }
 
+
         internal static async Task<CustomDifficultyBeatmap[]> Create_Difficulty_Array_Async(IReadOnlyList<IDifficultyBeatmap> difficultyBeatmaps, CustomDifficultyBeatmapSet beatmapSet, int mode)
         {
             CustomDifficultyBeatmap[] customDifficultyBeatmaps = new CustomDifficultyBeatmap[difficultyBeatmaps.Count];
@@ -121,8 +124,8 @@ namespace Chirality
             bool is_ME = false; // Chaos generator
             bool is_ME_or_NE = false; // Yeets walls
 
-            if (i.level.levelID.StartsWith("custom_level"))
-            {
+            //if (i.level.levelID.StartsWith("custom_level"))
+            //{
                 if (SongCore.Collections.RetrieveDifficultyData(i).additionalDifficultyData._requirements.Contains("Mapping Extensions"))
                 {
                     is_ME = true;
@@ -136,7 +139,7 @@ namespace Chirality
 
                     Plugin.Log.Debug("ME-NE map: yeeting walls");
                 }
-            }
+            //}
 
             IBeatmapDataBasicInfo beatmapDataBasicInfo = await i.GetBeatmapDataBasicInfoAsync();
             int numberOfLines = beatmapDataBasicInfo.numberOfLines;
