@@ -4,10 +4,10 @@
 
 Or, ever played true acc in the sky? What about worm curls?
 
-**A generative mod that creates inverted (horizontally, vertically, truly, or mirror-inverse) maps for for any non-360/90 map.
+**A generative mod that creates inverted (horizontal, vertical, true, or mirror-inversed) maps for for any non-360/90 map.
 Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber submission or Party Mode (and OST / select DLCs for pre-1.20.0 only). Each map can potentially generate 16 new characteristics!**
 
-**v2.0.0: Now with Arcs and Chains!**
+**v2.0.0: Now with Arcs and Chains! Plus Invert True mode!**
 
 
 <p>
@@ -15,13 +15,14 @@ Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber sub
   <img src="https://github.com/zeph-yr/Chirality/blob/ME_Noodle/Screenshots/mirror.png" width="500"/><br>
   <b><i>Ov but it's the inverse</i></b>
 </p>
-## New Game Modes
-- Invert Left-Right: Horizontal component of arrows are mirrored
-- Invert Up-Down: Vertical component arrows are mirrored
-- Invert True: Both horizontal and vertical of arrows are mirrored
-- Inverse: Map is mirrored over the diagonal axis
 
-Some modes generate lolloppes, worm curls, reverse chains, and disembodied chains out of stacks and burst sliders. This is by design. Inverse mode is free of lolloppes, reverse sliders etc.
+## New Game Modes
+- **Invert Left-Right:** Horizontal component of arrows are mirrored
+- **Invert Up-Down:** Vertical component arrows are mirrored
+- **Invert True:** Both horizontal and vertical of arrows are mirrored
+- **Inverse:** Map is mirrored over the diagonal axis
+- **Invert modes can generate lolloppes, worm curls, reverse chains, and disembodied chains out of stacks and burst sliders.** This is by design 😁 Inverse mode is free of lolloppes, reverse sliders etc
+- **ME and maps with precision placement will activate the shittech mode.** Yes, what you see in-game is intentional and deterministic 🤣. Rest assured you can play on the leaderboards of these maps
 
 ## How To Use
 - Place Chirality.dll in Plugins folder
@@ -37,7 +38,7 @@ Some modes generate lolloppes, worm curls, reverse chains, and disembodied chain
 - **For example:** You have set scores on InverseStandard then switch to play InverseOneSaber. The leaderboards will show InverseOneSaber scores. To see InverseStandard scores again, switch back to Standard mode using Mod Settings.
 
 ## Things To Note
-- Walls in Noodle and ME maps are removed. There is a special mode for ME and maps with precision placement 😁
+- Walls are stripped from Noodle and ME maps.
 - Pre-1.20.0 only: Can lag in menu when selecting maps with excessive events and objects (Chroma, wall maps). This is expected, please wait for it to finish loading
 
 ## What's In The Name?
