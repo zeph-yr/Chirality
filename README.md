@@ -13,7 +13,7 @@ Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber sub
 <p>
   <img src="https://github.com/zeph-yr/Chirality/blob/ME_Noodle/Screenshots/menu_4_small.png"/ width="1080"><br>
   <img src="https://github.com/zeph-yr/Chirality/blob/ME_Noodle/Screenshots/mirror.png" width="500"/><br>
-  <b><i>Ov but it's the inverse</i></b>
+  <b><i>Ov but it's the inverse - Will you put your name on the board?</i></b>
 </p>
 
 ## New Game Modes / Characteristics
