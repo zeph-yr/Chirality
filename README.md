@@ -20,7 +20,7 @@ Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber sub
 - **Invert Left-Right:** Horizontal component of arrows are mirrored
 - **Invert Up-Down:** Vertical component arrows are mirrored
 - **Invert True:** Both horizontal and vertical of arrows are mirrored
-- **Inverse:** Map is mirrored over the diagonal axis
+- **Inverse:** Map is mirrored over the diagonal axis, including colors, lanes and rows
 - **Invert modes can generate lolloppes, worm curls, reverse chains, and disembodied chains out of stacks and burst sliders.** This is by design 😁 Inverse mode is free of lolloppes, reverse sliders etc
 - **ME and maps with precision placement will activate the shittech mode.** Yes, what you see in-game is intentional and deterministic 🤣. Rest assured you can play on the leaderboards of these maps
 
