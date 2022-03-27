@@ -42,7 +42,7 @@ Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber sub
 - Pre-1.20.0 only: Can lag in menu when selecting maps with excessive events and objects (Chroma, wall maps). This is expected, please wait for it to finish loading
 
 ## What's In The Name?
-/kaɪˈrælɪtiː/ Chirality is a geometric property where an object cannot be superimposed on its mirror image by any translation or rotation. It is important to chemistry, biology, phyics, and math. Learn more about it here https://en.wikipedia.org/wiki/Chirality_(chemistry)
+/kaɪˈrælɪtiː/ Chirality is a geometric property where an object cannot be superimposed on its mirror image by any translation or rotation. It is important to chemistry, biology, physics, and math. Learn more about it here https://en.wikipedia.org/wiki/Chirality_(chemistry)
 
 ## About
-Comm'ed by Aroc. Thank you so much for your support! <3 Developing this mod was a fun challenge. I hope you enjoy playing the game with it as much as I enjoyed making it.
+Comm'ed by Aroc. Thank you so much! 💖 Developing this mod was a fun challenge. I hope you enjoy playing the game with it as much as I enjoyed making it.
