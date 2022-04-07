@@ -13,20 +13,20 @@ Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber sub
   <b><i>Ov but it's the inverse - Will you put your name on the leaderboard?</i></b>
 </p>
 
-## New Game Modes / Characteristics
+## New Game Modes / Beatmap Characteristics
 - **Invert Left-Right:** Horizontal component of arrows are mirrored
 - **Invert Up-Down:** Vertical component arrows are mirrored
 - **Invert True:** Both horizontal and vertical components of arrows are mirrored
 - **Inverse:** Map is mirrored over the diagonal axis, including bombs, walls, colors, lanes and rows
-- **Invert modes will generate lolloppes, worm curls, reverse chains, and disembodied chains out of stacks and burst sliders.** This is by design :) Inverse mode is free of lolloppes, reverse sliders etc if you want to avoid those patterns.
-- **ME and precision placements will activate the shittech mode.** Yes, what you see in-game is intentional and deterministic. Rest assured you can play on the leaderboards of these maps :)
+- **Invert modes will generate lolloppes, worm curls, reverse chains, and window chains out of stacks and burst sliders.** This is by design :) Inverse mode is free of lolloppes, reverse sliders etc if you want to avoid those patterns.
+- **ME and precision placement will activate the shittech accacalac mode.** Yes, what you see in-game is intentional and deterministic. Rest assured you can play on the leaderboards of these maps. They are the same each run :)
 
 ## How To Use
 - Place Chirality.dll in Plugins folder
-- Click on any map, try the 4 new game modes and have fun! Inverted True and Inverse modes can be pure chaos for some maps ^^
+- Click on any map, try the 4 new game modes and have fun! Inverted True and Inverse modes can be pure awesome chaos for some maps ^^
 - To change between Standard, OneSaber, NoArrows and Lawless: Go to Mod Settings. You must click OK to apply the changes. (Pre-1.20.0: Changing modes for OST/DLC requires a game restart after clicking OK to take effect).
 - To enable or disable the mod: Go to Mod Settings. You must click OK to apply the changes.
-- Chirality maps are not active in Multiplayer, however those generated in Solo will be displayed. To avoid confusion, it is recommended to restart the game before going into MP to clear the display.
+- Chirality maps are not active in Multiplayer. To avoid confusion from generated maps in the songlist, it is recommended to restart the game before going to MP.
 - Requires: BS_Utils, BSML, SongCore. BS 1.18.0+
 
 ## Scores
@@ -37,7 +37,7 @@ Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber sub
 
 ## Things To Note
 - Walls are stripped from Noodle and ME maps. Crouch walls are stripped from Inverse mode for safety.
-- Pre-1.20.0: Can lag in menu when selecting maps with excessive events and objects (Chroma, wall maps). This is expected, please wait for it to finish loading
+- Pre-1.20.0: Can lag in menu when selecting maps with excessive events and objects (wall maps). This is expected, please wait for it to finish loading
 
 ## What's In The Name?
 /kaɪˈrælɪtiː/ Chirality is a geometric property where an object cannot be superimposed on its mirror image by any translation or rotation. It is important to chemistry, biology, physics, and math. Learn more about it here https://en.wikipedia.org/wiki/Chirality_(chemistry)
