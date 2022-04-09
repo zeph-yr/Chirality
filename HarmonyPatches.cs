@@ -86,7 +86,7 @@ namespace Chirality
             CustomDifficultyBeatmap[] v_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, v_beatmapset, 1);
             CustomDifficultyBeatmap[] i_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, i_beatmapset, 4);
             CustomDifficultyBeatmap[] it_customDifficultyBeatmaps = await Create_Difficulty_Array_Async(level.beatmapLevelData.difficultyBeatmapSets[index].difficultyBeatmaps, it_beatmapset, 5);
-
+            
 
             h_beatmapset.SetCustomDifficultyBeatmaps(h_customDifficultyBeatmaps);
             v_beatmapset.SetCustomDifficultyBeatmaps(v_customDifficultyBeatmaps);
@@ -140,6 +140,9 @@ namespace Chirality
 
                 Plugin.Log.Debug("ME-NE map: yeeting walls");
             }
+
+            BeatmapSaveData print_data = ((CustomDifficultyBeatmap)i).beatmapSaveData;
+            //Plugin.Log.Debug("DATA: " + print_data.SerializeToJSONString());
 
 
             IBeatmapDataBasicInfo beatmapDataBasicInfo = await i.GetBeatmapDataBasicInfoAsync();
