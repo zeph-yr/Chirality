@@ -64,8 +64,8 @@ namespace Chirality
 
             return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, h_colorNotes, h_bombNotes, h_obstacleDatas, h_sliderDatas, 
                                        h_burstSliderDatas, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents, 
-                                       beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords, 
-                                       beatmapSaveData.useNormalEventsAsCompatibleEvents);
+                                       beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.lightTranslationEventBoxGroups, // 1.26.0 added LightTranslationEventBoxGroup 
+                                       beatmapSaveData.basicEventTypesWithKeywords, beatmapSaveData.useNormalEventsAsCompatibleEvents);
         }
 
 
@@ -121,8 +121,8 @@ namespace Chirality
 
             return new BeatmapSaveData(beatmapSaveData.bpmEvents, beatmapSaveData.rotationEvents, v_colorNotes, v_bombNotes, v_obstacleDatas, v_sliderDatas,
                                        v_burstSliderDatas, beatmapSaveData.waypoints, beatmapSaveData.basicBeatmapEvents, beatmapSaveData.colorBoostBeatmapEvents,
-                                       beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.basicEventTypesWithKeywords,
-                                       beatmapSaveData.useNormalEventsAsCompatibleEvents);
+                                       beatmapSaveData.lightColorEventBoxGroups, beatmapSaveData.lightRotationEventBoxGroups, beatmapSaveData.lightTranslationEventBoxGroups,
+                                       beatmapSaveData.basicEventTypesWithKeywords, beatmapSaveData.useNormalEventsAsCompatibleEvents);
         }
 
 

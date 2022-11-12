@@ -14,7 +14,7 @@ namespace Chirality
     {
         static async void Prefix(IBeatmapLevel level) // Turns out can have an async Patch!
         {
-            Plugin.Log.Debug("SetContent");
+            //Plugin.Log.Debug("SetContent");
 
             if (PluginConfig.Instance.enabled == false || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer || BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Mission)
             {
@@ -56,7 +56,7 @@ namespace Chirality
                 return;
             }
 
-            Plugin.Log.Debug("Index: " + index);
+            //Plugin.Log.Debug("Index: " + index);
 
             MirrorTransforms.rand = new System.Random(99);
 
@@ -141,7 +141,7 @@ namespace Chirality
                 Plugin.Log.Debug("ME-NE map: yeeting walls");
             }
 
-            BeatmapSaveData print_data = ((CustomDifficultyBeatmap)i).beatmapSaveData;
+            //BeatmapSaveData print_data = ((CustomDifficultyBeatmap)i).beatmapSaveData;
             //Plugin.Log.Debug("DATA: " + print_data.SerializeToJSONString());
 
 

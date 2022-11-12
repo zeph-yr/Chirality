@@ -3,14 +3,14 @@
     "id": "Chirality",
     "name": "Chirality",
     "author": "Zephyr",
-    "version": "2.0.1",
+    "version": "3.0.0",
     "description": "",
-    "gameVersion": "1.20.0",
+    "gameVersion": "1.26.0",
     "dependsOn": {
         "BSIPA": "^4.2.2",
-        "SongCore": "^3.9.5",
+        "SongCore": "^3.9.7",
         "BS Utils": "^1.12.0",
-        "BeatSaberMarkupLanguage": "^1.6.3"
+        "BeatSaberMarkupLanguage": "^1.6.8"
     },
     "links": {
         "donate": "https://www.paypal.me/zeph3yr"
