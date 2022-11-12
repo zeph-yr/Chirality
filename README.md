@@ -5,8 +5,12 @@
 **A generative mod that creates inverted (horizontal, vertical, true, or mirror-inversed) maps complete with lights and events for any non-360/90 map.
 Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber submission or Party Mode (and OST / select DLCs for pre-1.20.0). Each map can potentially generate 16 new characteristics!**
 
-**v3.0.0: Supports new translation lighting events**
-**v2.0.0: Now with Arcs and Chains! Plus Invert True mode!**
+<p>
+  <b>
+    v3.0.0: Supports translation lighting events<br>
+    v2.0.0: Now with Arcs and Chains! Plus Invert True mode!<br>
+  </b>
+</p>
 
 <p>
   <img src="https://github.com/zeph-yr/Chirality/blob/ME_Noodle/Screenshots/menu_4_small.png"/ width="1080"><br>
