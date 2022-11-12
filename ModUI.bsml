@@ -6,7 +6,10 @@
 				<text text='It is recommended to restart game before switching to Multiplayer' font-color='#ffff00ff' font-size='3' align='Center'></text>
 			</horizontal>
 			<horizontal>
-				<text text='Switching modes for OST / DLC requires game restart' font-color='#ffff00ff' font-size='3' align='Center'></text>
+				<text text='Mapping Extensions and Noodle maps may be a surprise 💗' font-color='#ffff00ff' font-size='3' align='Center' hover-hint='Yes it is intentional'></text>
+			</horizontal>
+			<horizontal>
+				<text text='Please play responsibly.' font-color='#ffff00ff' font-size='3' align='Center'></text>
 			</horizontal>
 		</vertical>
 		
@@ -14,9 +17,8 @@
 				<text text='You must press OK to apply changes!' font-color='#ffff00ff' font-size='3' align='Center'></text>
 			</horizontal>
 
-
-		<increment-setting value='increment_value' apply-on-change='false' bind-value='true' text='Current Mode' integer-only='true' min='0' max='3' formatter='increment_formatter' hover-hint='ME and Noodle maps may be a surprise. Please play responsibly.'/>
-		<checkbox-setting value ='enabled' on-change='set_enabled' text='Mod Enabled'></checkbox-setting>
+		<checkbox-setting value ='enabled' on-change='set_enabled' text='Enabled'></checkbox-setting>
+		<increment-setting value='increment_value' apply-on-change='false' bind-value='true' text='Game Mode' integer-only='true' min='0' max='3' formatter='increment_formatter' hover-hint='Select game mode to play on'/>
 
 		<horizontal>
 			<text text='Special request from Aroc. Thanks!' font-color='#ffff00ff' font-size='3' align='Center'></text>
