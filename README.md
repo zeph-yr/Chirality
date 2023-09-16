@@ -48,4 +48,6 @@ Available for Standard, OneSaber, NoArrows and Lawless modes with ScoreSaber sub
 /kaɪˈrælɪtiː/ Chirality is a geometric property where an object cannot be superimposed on its mirror image by any translation or rotation. It is important to chemistry, biology, physics, and math. Learn more about it here https://en.wikipedia.org/wiki/Chirality_(chemistry)
 
 ## About
+Copyright © 2021 - 2023 Zephyr | www.xephai.com
+
 Special request from Aroc. Thank you so much! 💖 Developing this mod was a fun challenge. I hope you enjoy playing the game with it as much as I enjoyed making it.
